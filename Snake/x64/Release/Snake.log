@@ -1,0 +1,21 @@
+﻿  BoxCollider.cpp
+  CollisionSystem.cpp
+  Component.cpp
+  GameLoop.cpp
+  GameObject.cpp
+  GameSettings.cpp
+  main.cpp
+  MeshRenderer.cpp
+  ObjectCollider.cpp
+  Renderer.cpp
+  Snake.cpp
+  SnakeMovement.cpp
+  SnakePart.cpp
+  Transform.cpp
+  TurnPoint.cpp
+  UserInputHandler.cpp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 81 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Snake.vcxproj -> C:\Users\piotr\Documents\personal\vs-projects\Snake\x64\Release\Snake.exe
