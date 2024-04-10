@@ -1,17 +1,17 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "MeshRenderer.h"
+#include "GameObjectStore.h"
 
 using namespace std;
 
 class Renderer
 {
 public:
-	Renderer(vector<MeshRenderer>& meshRenderers);
+	Renderer(GameObjectStore& gameObjectStore);
 
 	void render(sf::RenderWindow& window);
 private:
-	vector<MeshRenderer>& meshRenderers;
+	GameObjectStore& gameObjectStore;
 };
 

@@ -5,9 +5,12 @@
 class MeshRenderer : public Component
 {
 public:
+	MeshRenderer(sf::Sprite sprite);
 	~MeshRenderer() = default;
 
 	sf::Sprite getSprite() const noexcept;
+	void rotate(float angle) noexcept;
+	void updatePosition(sf::Vector2f position);
 private:
 	sf::Sprite sprite;
 };

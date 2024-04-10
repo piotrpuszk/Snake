@@ -32,3 +32,8 @@
 *.app
 
 .vs/
+
+**/x64/**
+Snake/Snake.aps
+Snake/Snake.rc
+Snake/resource.h

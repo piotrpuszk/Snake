@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Window/Keyboard.hpp>
+#include "KeyHandler.h"
 
 class UserInputHandler
 {

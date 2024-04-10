@@ -7,10 +7,10 @@ bool UserInputHandler::leftPressedState = false;
 
 void UserInputHandler::update()
 {
-	UserInputHandler::upPressedState = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-	UserInputHandler::downPressedState = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-	UserInputHandler::rightPressedState = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-	UserInputHandler::leftPressedState = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+	UserInputHandler::upPressedState = KeyHandler::wasKeyPressed(sf::Keyboard::Up);
+	UserInputHandler::downPressedState = KeyHandler::wasKeyPressed(sf::Keyboard::Down);
+	UserInputHandler::rightPressedState = KeyHandler::wasKeyPressed(sf::Keyboard::Right);
+	UserInputHandler::leftPressedState = KeyHandler::wasKeyPressed(sf::Keyboard::Left);
 }
 
 bool UserInputHandler::upPressed()

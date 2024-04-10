@@ -1,18 +1,18 @@
 #include "ObjectCollider.h"
 
-ObjectCollider::ObjectCollider(GameObject& gameObject, BoxCollider& boxCollider)
+ObjectCollider::ObjectCollider(GameObject* gameObject, BoxCollider* boxCollider)
 	:
 	gameObject{ gameObject },
 	boxCollider{ boxCollider }
 {
 }
 
-GameObject& ObjectCollider::getGameObject() noexcept
+GameObject* ObjectCollider::getGameObject() noexcept
 {
 	return gameObject;
 }
 
-BoxCollider& ObjectCollider::getBoxCollider() noexcept
+BoxCollider* ObjectCollider::getBoxCollider() noexcept
 {
 	return boxCollider;
 }

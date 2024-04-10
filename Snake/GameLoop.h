@@ -2,12 +2,15 @@
 #include "GameSettings.h"
 #include "Renderer.h"
 #include "CollisionSystem.h"
+#include <vector>
+#include "GameObjectStore.h"
 
 
 class GameLoop
 {
 public:
-	GameLoop(const GameSettings& gameSettings, 
+	GameLoop(GameObjectStore& gameObjectStore,
+		const GameSettings& gameSettings, 
 		Renderer& renderer,
 		CollisionSystem& collisionSystem, 
 		sf::RenderWindow& renderWindow);
@@ -26,5 +29,6 @@ private:
 	Renderer& renderer;
 	CollisionSystem& collisionSystem;
 	sf::RenderWindow& renderWindow;
+	GameObjectStore& gameObjectStore;
 };
 

@@ -141,17 +141,24 @@
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectFactory.cpp" />
+    <ClCompile Include="GameObjectInstantiator.cpp" />
+    <ClCompile Include="GameObjectStore.cpp" />
     <ClCompile Include="GameSettings.cpp" />
+    <ClCompile Include="KeyHandler.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="ObjectCollider.cpp" />
+    <ClCompile Include="Orientation.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="SnakeMovement.cpp" />
     <ClCompile Include="SnakePart.cpp" />
+    <ClCompile Include="TextureStore.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TurnPoint.cpp" />
     <ClCompile Include="UserInputHandler.cpp" />
+    <ClCompile Include="WorldDirection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CollisionSystem.h" />
@@ -159,18 +166,32 @@
     <ClInclude Include="GameLoop.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectFactory.h" />
+    <ClInclude Include="GameObjectInstantiator.h" />
+    <ClInclude Include="GameObjectStore.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="KeyHandler.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="ObjectCollider.h" />
+    <ClInclude Include="Orientation.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="SnakeMovement.h" />
     <ClInclude Include="SnakePart.h" />
+    <ClInclude Include="TextureStore.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TurnPoint.h" />
     <ClInclude Include="UserInputHandler.h" />
     <ClInclude Include="WorldDirection.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="testTexture.jpg" />
+    <Image Include="testTexture2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Snake.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

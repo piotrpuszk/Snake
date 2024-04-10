@@ -1,15 +1,19 @@
 #include "Renderer.h"
 
-Renderer::Renderer(vector<MeshRenderer>& meshRenderers)
+Renderer::Renderer(GameObjectStore& gameObjectStore)
 	:
-	meshRenderers{ meshRenderers }
+	gameObjectStore{ gameObjectStore }
 {
 }
 
 void Renderer::render(sf::RenderWindow& window)
 {
-	for (const auto& meshRenderer : meshRenderers)
+	window.clear(sf::Color::Black);
+
+	for (auto meshRenderer : gameObjectStore.getMeshRenderers())
 	{
-		window.draw(meshRenderer.getSprite());
+		window.draw(meshRenderer->getSprite());
 	}
+
+	window.display();
 }

@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Component.h"
 
-class Transform : Component
+class Transform : public Component
 {
 public:
 	~Transform() = default;

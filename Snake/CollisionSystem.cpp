@@ -17,10 +17,10 @@ void CollisionSystem::checkCollisions()
 				continue;
 			}
 
-			if (objectCollider1.getBoxCollider().isColliding(objectCollider2.getBoxCollider()))
+			if (objectCollider1.getBoxCollider()->isColliding(*objectCollider2.getBoxCollider()))
 			{
-				objectCollider1.getGameObject().onEnterCollision(objectCollider2.getGameObject());
-				objectCollider2.getGameObject().onEnterCollision(objectCollider1.getGameObject());
+				objectCollider1.getGameObject()->onEnterCollision(*objectCollider2.getGameObject());
+				objectCollider2.getGameObject()->onEnterCollision(*objectCollider1.getGameObject());
 			}
 		}
 	}

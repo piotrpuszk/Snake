@@ -3,14 +3,17 @@ C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\CollisionSystem.cpp;C:
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Component.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\Component.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\GameLoop.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\GameLoop.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\GameObject.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\GameObject.obj
+C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\GameObjectFactory.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\GameObjectFactory.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\GameSettings.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\GameSettings.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\main.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\main.obj
+C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Map.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\Map.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\MeshRenderer.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\MeshRenderer.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\ObjectCollider.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\ObjectCollider.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Renderer.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\Renderer.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Snake.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\Snake.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\SnakeMovement.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\SnakeMovement.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\SnakePart.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\SnakePart.obj
+C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\TextureStore.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\TextureStore.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Transform.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\Transform.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\TurnPoint.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\TurnPoint.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\UserInputHandler.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Release\UserInputHandler.obj
