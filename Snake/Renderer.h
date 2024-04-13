@@ -8,7 +8,7 @@ class Renderer
 public:
 	Renderer(GameObjectStore& gameObjectStore);
 
-	void render(sf::RenderWindow& window);
+	void render(sf::RenderWindow& window) const;
 private:
 	GameObjectStore& gameObjectStore;
 };

@@ -14,7 +14,7 @@ int GameObject::getId() const noexcept
 	return id;
 }
 
-void GameObject::addComponent(std::unique_ptr<Component> component)
+std::vector<MeshRenderer*>& GameObject::getMeshRenderers() noexcept
 {
-	components.push_back(std::move(component));
+	return meshRenderers;
 }

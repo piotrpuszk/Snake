@@ -39,9 +39,6 @@
     <ClCompile Include="UserInputHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -61,9 +58,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameObjectFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextureStore.cpp">
@@ -87,16 +81,13 @@
     <ClCompile Include="Maths.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VectorExtensions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TurnPointStore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SnakeComponentPositionIterator.cpp">
+    <ClCompile Include="GeneratorOfSnakePartPositions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionResponse.cpp">
+    <ClCompile Include="Consumable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,9 +140,6 @@
     <ClInclude Include="GameObjectFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TextureStore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -173,16 +161,13 @@
     <ClInclude Include="Maths.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VectorExtensions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TurnPointStore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SnakeComponentPositionIterator.h">
+    <ClInclude Include="GeneratorOfSnakePartPositions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionResponse.h">
+    <ClInclude Include="Consumable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -191,6 +176,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="testTexture2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="food01.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

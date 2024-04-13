@@ -6,23 +6,22 @@
 #include "SnakeMovement.h"
 #include "MeshRenderer.h"
 #include "TurnPointStore.h"
-#include "SnakeComponentPositionIterator.h"
+#include "GeneratorOfSnakePartPositions.h"
 #include "BoxCollider.h"
+#include "Consumable.h"
 
-class Snake : public GameObject, public Component
+class Snake : public GameObject
 {
 public:
-	Snake(std::unique_ptr<TurnPointStore> turnPointStore, SnakeComponentPositionIterator snakeComponentPositionIterator);
+	Snake(std::unique_ptr<TurnPointStore> turnPointStore, GeneratorOfSnakePartPositions generatorOfSnakePartPositions);
+private:
 	void awake() override;
-	template<typename T>
-	T* getComponent();
-protected:
 	void update() override;
 	void fixedUpdate() override;
-	void onEnterCollision(GameObject& gameObject) override;
-private:
+	void onEnterCollision(GameObject* gameObject) override;
+
 	std::unique_ptr<TurnPointStore> turnPointStore;
-	SnakeComponentPositionIterator snakeComponentPositionIterator;
+	GeneratorOfSnakePartPositions generatorOfSnakePartPositions;
 	SnakeMovement* snakeMovement;
 	Transform* transform;
 	std::vector<MeshRenderer*> meshRenderers;
@@ -30,16 +29,11 @@ private:
 
 	void turn(sf::Vector2f direction);
 	void move();
-	void onEatFruit();
+	void onEatFruit(Consumable* consumable);
 	void grow(int amount);
 	bool canTurn(sf::Vector2f direction) const noexcept;
-	void updateComponentsPositions();
-	void removeUsedUpTurnPoints();
-	bool IsEatingItself();
+	void updateComponentsPositions(std::vector<sf::Vector2f> positions);
+	void removeUsedUpTurnPoints(std::vector<sf::Vector2f> positions);
+	bool isEatingItself() const;
+	bool isEatingFood(GameObject* gameObject) const;
 };
-
-template<typename T>
-inline T* Snake::getComponent()
-{
-	return GameObject::getComponent<T>();
-}

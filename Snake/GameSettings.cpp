@@ -8,12 +8,12 @@ GameSettings::GameSettings(sf::Time fixedTimeStep,
 {
 }
 
-sf::Time GameSettings::getFixedTimeStep() const
+sf::Time GameSettings::getFixedTimeStep() const noexcept
 {
 	return fixedTimeStep;
 }
 
-sf::Vector2u GameSettings::getMapSize() const
+sf::Vector2u GameSettings::getMapSize() const noexcept
 {
 	return mapSize;
 }

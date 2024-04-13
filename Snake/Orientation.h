@@ -4,11 +4,11 @@
 class Orientation
 {
 public:
-	static bool isUp(sf::Vector2f direction);
-	static bool isDown(sf::Vector2f direction);
-	static bool isRight(sf::Vector2f direction);
-	static bool isLeft(sf::Vector2f direction);
-	static float getAngle(sf::Vector2f from, sf::Vector2f to);
+	static bool isUp(sf::Vector2f direction) noexcept;
+	static bool isDown(sf::Vector2f direction) noexcept;
+	static bool isRight(sf::Vector2f direction) noexcept;
+	static bool isLeft(sf::Vector2f direction) noexcept;
+	static float getAngle(sf::Vector2f from, sf::Vector2f to) noexcept;
 
 private:
 	static float angle;

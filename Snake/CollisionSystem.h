@@ -8,7 +8,8 @@ class CollisionSystem
 public:
 	CollisionSystem(std::vector<ObjectCollider>& objectColliders);
 
-	void checkCollisions();
+	void checkCollisions() const;
+	void deleteCollider(GameObject* gameObject);
 private:
 	std::vector<ObjectCollider>& objectColliders;
 };

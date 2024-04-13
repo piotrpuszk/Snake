@@ -3,27 +3,27 @@
 
 float Orientation::angle = 90.f;
 
-bool Orientation::isUp(sf::Vector2f direction)
+bool Orientation::isUp(sf::Vector2f direction) noexcept
 {
 	return direction == WorldDirection::up;
 }
 
-bool Orientation::isDown(sf::Vector2f direction)
+bool Orientation::isDown(sf::Vector2f direction) noexcept
 {
 	return direction == WorldDirection::down;
 }
 
-bool Orientation::isRight(sf::Vector2f direction)
+bool Orientation::isRight(sf::Vector2f direction) noexcept
 {
 	return direction == WorldDirection::right;
 }
 
-bool Orientation::isLeft(sf::Vector2f direction)
+bool Orientation::isLeft(sf::Vector2f direction) noexcept
 {
 	return direction == WorldDirection::left;
 }
 
-float Orientation::getAngle(sf::Vector2f from, sf::Vector2f to)
+float Orientation::getAngle(sf::Vector2f from, sf::Vector2f to) noexcept
 {
 	if (isUp(from) && isRight(to))
 	{

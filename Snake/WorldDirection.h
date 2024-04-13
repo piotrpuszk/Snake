@@ -9,5 +9,5 @@ public:
 	static sf::Vector2f right;
 	static sf::Vector2f left;
 
-	static bool areOppositeDirections(sf::Vector2f direction1, sf::Vector2f direction2);
+	static bool areOppositeDirections(sf::Vector2f direction1, sf::Vector2f direction2) noexcept;
 };

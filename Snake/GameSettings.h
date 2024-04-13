@@ -7,8 +7,8 @@ public:
 	GameSettings(sf::Time fixedTimeStep,
 		sf::Vector2u mapSize);
 
-	sf::Time getFixedTimeStep() const;
-	sf::Vector2u getMapSize() const;
+	sf::Time getFixedTimeStep() const noexcept;
+	sf::Vector2u getMapSize() const noexcept;
 private:
 	sf::Time fixedTimeStep;
 	sf::Vector2u mapSize;

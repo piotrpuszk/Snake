@@ -20,8 +20,9 @@ private:
 	void update();
 	void fixedUpdate();
 	void handleUserInput();
-	void render();
-	void collisionCheck();
+	void render() const;
+	void collisionCheck() const;
+	void destroySelectedGameObjects();
 
 	sf::Time lag;
 	sf::Time fixedTimeStep;

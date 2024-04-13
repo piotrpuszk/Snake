@@ -1,5 +1,6 @@
 #include "GameLoop.h"
 #include "UserInputHandler.h"
+#include "GameObjectInstantiator.h"
 
 GameLoop::GameLoop(GameObjectStore& gameObjectStore,
 	const GameSettings& gameSettings,
@@ -38,6 +39,7 @@ void GameLoop::execute()
 		lag -= fixedTimeStep;
 	}
 	render();
+	destroySelectedGameObjects();
 }
 
 void GameLoop::update()
@@ -62,12 +64,17 @@ void GameLoop::handleUserInput()
 	UserInputHandler::update();
 }
 
-void GameLoop::render()
+void GameLoop::render() const
 {
 	renderer.render(renderWindow);
 }
 
-void GameLoop::collisionCheck()
+void GameLoop::collisionCheck() const
 {
 	collisionSystem.checkCollisions();
+}
+
+void GameLoop::destroySelectedGameObjects()
+{
+	GameObjectInstantiator::destroy();
 }

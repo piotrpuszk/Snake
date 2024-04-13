@@ -14,6 +14,7 @@ class GameObjectFactory
 public:
 	GameObjectFactory(TextureStore textureStore, GameObjectStore& gameObjectStore);
 	Snake* createSnake();
+	Consumable* createFood01(sf::Vector2f position);
 
 	template<typename T, typename... Types>
 	T* create(Types... args);

@@ -8,7 +8,7 @@ class ObjectCollider
 public:
 	ObjectCollider(GameObject* gameObject, BoxCollider* boxCollider);
 
-	GameObject* getGameObject() noexcept;
+	GameObject* getGameObject();
 	BoxCollider* getBoxCollider() noexcept;
 private:
 	GameObject* gameObject;

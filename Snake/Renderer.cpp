@@ -1,4 +1,6 @@
 #include "Renderer.h"
+#include "Consumable.h"
+#include <iostream>
 
 Renderer::Renderer(GameObjectStore& gameObjectStore)
 	:
@@ -6,13 +8,16 @@ Renderer::Renderer(GameObjectStore& gameObjectStore)
 {
 }
 
-void Renderer::render(sf::RenderWindow& window)
+void Renderer::render(sf::RenderWindow& window) const
 {
 	window.clear(sf::Color::Black);
 
-	for (auto& meshRenderer : gameObjectStore.getMeshRenderers())
+	for (const auto& gameObject : gameObjectStore.getGameObjects())
 	{
-		window.draw(meshRenderer->getSprite());
+		for (const auto& meshRenderer : gameObject->getMeshRenderers())
+		{
+			window.draw(meshRenderer->getSprite());
+		}
 	}
 
 	window.display();

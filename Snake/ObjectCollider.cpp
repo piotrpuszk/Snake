@@ -7,7 +7,7 @@ ObjectCollider::ObjectCollider(GameObject* gameObject, BoxCollider* boxCollider)
 {
 }
 
-GameObject* ObjectCollider::getGameObject() noexcept
+GameObject* ObjectCollider::getGameObject()
 {
 	return gameObject;
 }

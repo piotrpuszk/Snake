@@ -136,9 +136,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoxCollider.cpp" />
-    <ClCompile Include="CollisionResponse.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
-    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Consumable.cpp" />
     <ClCompile Include="GameLoop.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectFactory.cpp" />
@@ -147,27 +146,25 @@
     <ClCompile Include="GameSettings.cpp" />
     <ClCompile Include="KeyHandler.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Maths.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="ObjectCollider.cpp" />
     <ClCompile Include="Orientation.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Snake.cpp" />
-    <ClCompile Include="SnakeComponentPositionIterator.cpp" />
+    <ClCompile Include="GeneratorOfSnakePartPositions.cpp" />
     <ClCompile Include="SnakeMovement.cpp" />
     <ClCompile Include="TextureStore.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TurnPoint.cpp" />
     <ClCompile Include="TurnPointStore.cpp" />
     <ClCompile Include="UserInputHandler.cpp" />
-    <ClCompile Include="VectorExtensions.cpp" />
     <ClCompile Include="WorldDirection.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CollisionResponse.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="Consumable.h" />
     <ClInclude Include="GameLoop.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectFactory.h" />
@@ -176,7 +173,6 @@
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="KeyHandler.h" />
-    <ClInclude Include="Map.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="ObjectCollider.h" />
@@ -184,17 +180,17 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Snake.h" />
-    <ClInclude Include="SnakeComponentPositionIterator.h" />
+    <ClInclude Include="GeneratorOfSnakePartPositions.h" />
     <ClInclude Include="SnakeMovement.h" />
     <ClInclude Include="TextureStore.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TurnPoint.h" />
     <ClInclude Include="TurnPointStore.h" />
     <ClInclude Include="UserInputHandler.h" />
-    <ClInclude Include="VectorExtensions.h" />
     <ClInclude Include="WorldDirection.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="food01.png" />
     <Image Include="testTexture.jpg" />
     <Image Include="testTexture2.jpg" />
   </ItemGroup>

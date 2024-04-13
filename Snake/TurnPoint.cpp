@@ -1,10 +1,11 @@
 #include "TurnPoint.h"
 
-TurnPoint::TurnPoint(sf::Vector2f position, sf::Vector2f directionFrom, sf::Vector2f directionTo)
+TurnPoint::TurnPoint(sf::Vector2f position, sf::Vector2f directionFrom, sf::Vector2f directionTo, MeshRenderer* meshRenderer)
 	:
 	position{ position },
 	directionFrom{ directionFrom },
-	directionTo{ directionTo }
+	directionTo{ directionTo },
+	meshRenderer{ meshRenderer }
 {
 }
 
@@ -21,6 +22,11 @@ sf::Vector2f TurnPoint::getDirectionFrom() const noexcept
 sf::Vector2f TurnPoint::getDirectionTo() const noexcept
 {
 	return directionTo;
+}
+
+MeshRenderer* TurnPoint::getMeshRenderer()
+{
+	return meshRenderer;
 }
 
 bool TurnPoint::operator==(const TurnPoint& rightSide)

@@ -13,23 +13,40 @@
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+	GameSettings gameSettings{ sf::seconds(0.02f), {800, 600} };
+
 	TextureStore textureStore{};
 	GameObjectStore gameObjectStore{};
 	GameObjectFactory gameObjectFactory{ textureStore, gameObjectStore };
 	auto snake = gameObjectFactory.createSnake();
-	GameSettings gameSettings{ sf::seconds(0.02f), {800, 600} };
+	std::vector<Consumable*> consumables{};
+	consumables.push_back(gameObjectFactory.createFood01({ 100.f, 100.f }));
+	consumables.push_back(gameObjectFactory.createFood01({ 200.f, 200.f }));
+	consumables.push_back(gameObjectFactory.createFood01({ 300.f, 300.f }));
+	consumables.push_back(gameObjectFactory.createFood01({ 400.f, 400.f }));
+	consumables.push_back(gameObjectFactory.createFood01({ 500.f, 400.f }));
+	consumables.push_back(gameObjectFactory.createFood01({ 700.f, 400.f }));
+	consumables.push_back(gameObjectFactory.createFood01({ 500.f, 150.f }));
 	std::vector<ObjectCollider> objectColliders{};
-	Renderer renderer{ gameObjectStore };
 	for (const auto& e : snake->getComponents<BoxCollider>())
 	{
 		objectColliders.push_back(ObjectCollider{ snake, e});
 	}
+	for (auto& consumable : consumables)
+	{
+		for (const auto& e : consumable->getComponents<BoxCollider>())
+		{
+			objectColliders.push_back(ObjectCollider{ consumable, e });
+		}
+	}
 	CollisionSystem collisionSystem{ objectColliders };
+	Renderer renderer{ gameObjectStore };
 	GameLoop gameLoop{ gameObjectStore, gameSettings, renderer, collisionSystem, window };
 	KeyHandler::initialize();
 
 	GameObjectInstantiator::setGameObjectFactory(&gameObjectFactory);
 	GameObjectInstantiator::setGameObjectStore(&gameObjectStore);
+	GameObjectInstantiator::setCollisionSystem(&collisionSystem);
 
 	while (window.isOpen())
 	{

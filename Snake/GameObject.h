@@ -1,20 +1,19 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <type_traits>
 #include "Component.h"
+#include "MeshRenderer.h"
 
 class GameObject
 {
+	friend class GameLoop;
+	friend class CollisionSystem;
 public:
 	GameObject();
 	virtual ~GameObject() = default;
-
-	virtual void awake() = 0;
-	virtual void update() = 0;
-	virtual void fixedUpdate() = 0;
-	virtual void onEnterCollision(GameObject& gameObject) = 0;
-
 	int getId() const noexcept;
+	std::vector<MeshRenderer*>& getMeshRenderers() noexcept;
 
 	template <typename T>
 	T* getComponent();
@@ -23,10 +22,17 @@ public:
 
 	template <typename T, typename... Types>
 	T* addComponent(Types... args);
-	void addComponent(std::unique_ptr<Component> component);
+	template<typename T>
+	void removeComponent(T* component);
 private:
+	virtual void awake() = 0;
+	virtual void update() = 0;
+	virtual void fixedUpdate() = 0;
+	virtual void onEnterCollision(GameObject* gameObject) = 0;
+
 	int id;
 	std::vector<std::unique_ptr<Component>> components;
+	std::vector<MeshRenderer*> meshRenderers;
 	static int idSequence;
 };
 
@@ -62,6 +68,24 @@ inline std::vector<T*> GameObject::getComponents()
 template <typename T, typename... Types>
 inline T* GameObject::addComponent(Types... args)
 {
-	components.push_back(make_unique<T>(args...));
-	return dynamic_cast<T*>(components.back().get());
+	components.push_back(std::make_unique<T>(args...));
+	auto result{ dynamic_cast<T*>(components.back().get()) };
+
+	if (std::is_same_v<T, MeshRenderer>)
+	{
+		meshRenderers.push_back(dynamic_cast<MeshRenderer*>(result));
+	}
+
+	return result;
+}
+
+template<typename T>
+inline void GameObject::removeComponent(T* component)
+{
+	if (std::is_same_v<T, MeshRenderer>)
+	{
+		erase_if(meshRenderers, [&](const auto& e) { return &*e == &*component; });
+	}
+
+	erase_if(components, [&](const auto& e) { return &*e == &*component; });
 }

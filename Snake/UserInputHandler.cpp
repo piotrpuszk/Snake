@@ -13,22 +13,22 @@ void UserInputHandler::update()
 	UserInputHandler::leftPressedState = KeyHandler::wasKeyPressed(sf::Keyboard::Left);
 }
 
-bool UserInputHandler::upPressed()
+bool UserInputHandler::upPressed() noexcept
 {
 	return UserInputHandler::upPressedState;
 }
 
-bool UserInputHandler::downPressed()
+bool UserInputHandler::downPressed() noexcept
 {
 	return UserInputHandler::downPressedState;
 }
 
-bool UserInputHandler::rightPressed()
+bool UserInputHandler::rightPressed() noexcept
 {
 	return UserInputHandler::rightPressedState;
 }
 
-bool UserInputHandler::leftPressed()
+bool UserInputHandler::leftPressed() noexcept
 {
 	return UserInputHandler::leftPressedState;
 }

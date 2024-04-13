@@ -6,10 +6,10 @@ class UserInputHandler
 {
 public:
 	static void update();
-	static bool upPressed();
-	static bool downPressed();
-	static bool rightPressed();
-	static bool leftPressed();
+	static bool upPressed() noexcept;
+	static bool downPressed() noexcept;
+	static bool rightPressed() noexcept;
+	static bool leftPressed() noexcept;
 private:
 	static bool upPressedState;
 	static bool downPressedState;
