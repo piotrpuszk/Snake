@@ -1,26 +1,10 @@
 #include "SnakeMovement.h"
 #include <cmath>
 
-SnakeMovement::SnakeMovement( float speed)
+SnakeMovement::SnakeMovement(Transform* transform, float speed)
 	:
+	transform{ transform },
 	speed{ speed }
-{
-}
-
-void SnakeMovement::awake()
-{
-	transform = getComponent<Transform>();
-}
-
-void SnakeMovement::update()
-{
-}
-
-void SnakeMovement::fixedUpdate()
-{
-}
-
-void SnakeMovement::onEnterCollision(GameObject& gameObject)
 {
 }
 

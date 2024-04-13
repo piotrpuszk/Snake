@@ -20,8 +20,7 @@ std::shared_ptr<Snake> GameObjectFactory::createSnake()
 	transform->setForward({ 1.f, 0.f });
 	transform->setPosition({ 500.f, 150.f });
 	snake->addComponent(transform);
-	snake->addComponent(std::make_shared<SnakeMovement>(1.f));
-	snake->getComponent<SnakeMovement>()->addComponent(transform);
+	snake->addComponent(std::make_shared<SnakeMovement>(transform.get(), 1.f));
 	sf::Vector2f position{ snakePartCount * snakePartSize, snakePartSize };
 	sf::Sprite sprite{};
 	sprite.setOrigin({ snakePartSize / 2.f, snakePartSize / 2.f });
@@ -34,10 +33,6 @@ std::shared_ptr<Snake> GameObjectFactory::createSnake()
 		snake->addComponent(meshRenderer);
 		snake->addComponent(boxCollider);
 	}
-
-
-	snake->getComponent<SnakeMovement>()->awake();
-	snake->awake();
 
 	gameObjectStore.addGameObject(snake);
 	return snake;

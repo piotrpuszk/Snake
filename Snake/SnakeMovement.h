@@ -3,16 +3,11 @@
 #include "Transform.h"
 #include "GameObject.h"
 
-class SnakeMovement : public GameObject, public Component
+class SnakeMovement : public Component
 {
 public:
-	SnakeMovement(float speed);
+	SnakeMovement(Transform* transform, float speed);
 	~SnakeMovement() = default;
-
-	void awake() override;
-	void update() override;
-	void fixedUpdate() override;
-	void onEnterCollision(GameObject& gameObject) override;
 
 	void move();
 	void turn(sf::Vector2f direction);

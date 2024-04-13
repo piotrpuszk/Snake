@@ -15,6 +15,15 @@ GameLoop::GameLoop(GameObjectStore& gameObjectStore,
 	collisionSystem{ collisionSystem },
 	renderWindow{ renderWindow }
 {
+	awake();
+}
+
+void GameLoop::awake()
+{
+	for (auto& e : gameObjectStore.getGameObjects())
+	{
+		e->awake();
+	}
 }
 
 void GameLoop::execute()

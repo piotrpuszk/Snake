@@ -17,6 +17,7 @@ public:
 
 	void execute();
 private:
+	void awake();
 	void update();
 	void fixedUpdate();
 	void handleUserInput();
