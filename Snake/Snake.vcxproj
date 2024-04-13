@@ -157,7 +157,9 @@
     <ClCompile Include="TextureStore.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TurnPoint.cpp" />
+    <ClCompile Include="TurnPointStore.cpp" />
     <ClCompile Include="UserInputHandler.cpp" />
+    <ClCompile Include="VectorExtensions.cpp" />
     <ClCompile Include="WorldDirection.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +185,9 @@
     <ClInclude Include="TextureStore.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TurnPoint.h" />
+    <ClInclude Include="TurnPointStore.h" />
     <ClInclude Include="UserInputHandler.h" />
+    <ClInclude Include="VectorExtensions.h" />
     <ClInclude Include="WorldDirection.h" />
   </ItemGroup>
   <ItemGroup>

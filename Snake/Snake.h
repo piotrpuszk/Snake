@@ -5,11 +5,12 @@
 #include "TurnPoint.h"
 #include "SnakeMovement.h"
 #include "MeshRenderer.h"
+#include "TurnPointStore.h"
 
 class Snake : public GameObject, public Component
 {
 public:
-	Snake();
+	Snake(TurnPointStore turnPointStore, float partSize);
 	void awake() override;
 	template<typename T>
 	T* getComponent();
@@ -18,7 +19,8 @@ protected:
 	void fixedUpdate() override;
 	void onEnterCollision(GameObject& gameObject) override;
 private:
-	vector<TurnPoint> turnPoints;
+	TurnPointStore turnPointStore;
+	float partSize;
 	SnakeMovement* snakeMovement;
 	Transform* transform;
 	vector<MeshRenderer*> meshRenderers;
@@ -29,7 +31,10 @@ private:
 	void grow(int amount);
 	bool canTurn(sf::Vector2f direction) const noexcept;
 	void updateMeshRendererPositions();
-	void eraseTurnPoint(TurnPoint turnPoint);
+
+	void fillInDistanceToTurnPoint(size_t& turnPointIndex, size_t& tileIndex, sf::Vector2f& forward, sf::Vector2f& position);
+	void fillInRemainingDistanceToTurnPoint(size_t& turnPointIndex, size_t& tileIndex, sf::Vector2f& position, sf::Vector2f& forward);
+	void fillInDistanceAfterTurnPoints(sf::Vector2f& position, sf::Vector2f& forward, size_t& tileIndex);
 };
 
 template<typename T>

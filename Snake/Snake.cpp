@@ -6,9 +6,10 @@
 #include <cmath>
 #include <iostream>
 
-Snake::Snake()
+Snake::Snake(TurnPointStore turnPointStore, float partSize)
 	:
-	turnPoints{}
+	turnPointStore{ turnPointStore },
+	partSize{ partSize }
 {
 }
 
@@ -56,7 +57,7 @@ void Snake::turn(sf::Vector2f direction)
 		return;
 	}
 
-	turnPoints.insert(begin(turnPoints), TurnPoint{ transform->getPosition(), transform->getForward(), direction });
+	turnPointStore.add(TurnPoint{ transform->getPosition(), transform->getForward(), direction });
 	snakeMovement->turn(direction);
 }
 
@@ -81,85 +82,85 @@ bool Snake::canTurn(sf::Vector2f direction) const noexcept
 
 void Snake::updateMeshRendererPositions()
 {
-	auto headPosition{ transform->getPosition() };
-	auto size{ 20.f };
 	auto forward{ transform->getForward() };
-	auto position{ headPosition };
+	auto position{ transform->getPosition() };
 	size_t tileIndex{ 1 };
 	meshRenderers[0]->updatePosition(position);
-	vector<TurnPoint> turnPointsToErase{};
 
-	for (size_t turnPointIndex{}; turnPointIndex < turnPoints.size(); ++turnPointIndex)
+	for (size_t turnPointIndex{}; turnPointIndex < turnPointStore.getTurnPoints().size(); ++turnPointIndex)
 	{
-		auto turnPoint{ turnPoints[turnPointIndex] };
-
 		if (tileIndex >= meshRenderers.size())
 		{
-			for_each(begin(turnPoints) + turnPointIndex, end(turnPoints), [&](const auto& e) { turnPointsToErase.push_back(e); });
+			turnPointStore.markForRemoval(turnPointStore.getTurnPoints(), turnPointIndex);
 			break;
 		}
 
-		forward = turnPoint.getDirectionTo();
-		const auto distance{ Maths::magnitude(position - turnPoint.getPosition()) };
-		const auto numberOfTiles{ floor(distance / size) };
-		for (size_t i{}; i < numberOfTiles && tileIndex + i < meshRenderers.size(); ++i)
-		{
-			position -= size * forward;
-			meshRenderers[tileIndex + i]->updatePosition(position);
-		}
-		tileIndex += numberOfTiles;
-
-		if (tileIndex >= meshRenderers.size())
-		{
-			for_each(begin(turnPoints) + turnPointIndex, end(turnPoints), [&](const auto& e) { turnPointsToErase.push_back(e); });
-			break;
-		}
-
-		auto remainder{ abs(distance - numberOfTiles * size) };
-
-		if (remainder <= 0)
-		{
-			forward = turnPoint.getDirectionFrom();
-			continue;
-		}
-
-		float availableDistance{ size };
-		for (size_t j{ turnPointIndex }; j < turnPoints.size(); ++j)
-		{
-			auto currentTurnPoint{ turnPoints[j] };
-			auto distanceBetween{ Maths::magnitude(position - currentTurnPoint.getPosition()) };
-			if (distanceBetween > availableDistance)
-			{
-				forward = currentTurnPoint.getDirectionTo();
-				--turnPointIndex;
-				break;
-			}
-			availableDistance -= distanceBetween;
-			position = currentTurnPoint.getPosition();
-			forward = currentTurnPoint.getDirectionFrom();
-			++turnPointIndex;
-		}
-		if (availableDistance > 0)
-		{
-			position -= availableDistance * forward;
-		}
-		meshRenderers[tileIndex]->updatePosition(position);
-		tileIndex++;
+		fillInDistanceToTurnPoint(turnPointIndex, tileIndex, forward, position);
 	}
 
-	for (; tileIndex < meshRenderers.size(); ++tileIndex)
-	{
-		position -= size * forward;
-		meshRenderers[tileIndex]->updatePosition(position);
-	}
-
-	for (const auto& turnPoint : turnPointsToErase)
-	{
-		eraseTurnPoint(turnPoint);
-	}
+	fillInDistanceAfterTurnPoints(position, forward, tileIndex);
+	turnPointStore.removeMarked();
 }
 
-void Snake::eraseTurnPoint(TurnPoint turnPoint)
+void Snake::fillInDistanceToTurnPoint(size_t& turnPointIndex, size_t& tileIndex, sf::Vector2f& forward, sf::Vector2f& position)
 {
-	erase(turnPoints, turnPoint);
+	forward = turnPointStore.getTurnPoints()[turnPointIndex].getDirectionTo();
+	const auto distance{ Maths::magnitude(position - turnPointStore.getTurnPoints()[turnPointIndex].getPosition())};
+	const auto numberOfTiles{ floor(distance / partSize) };
+	for (size_t i{}; i < numberOfTiles && tileIndex + i < meshRenderers.size(); ++i)
+	{
+		position -= partSize * forward;
+		meshRenderers[tileIndex + i]->updatePosition(position);
+	}
+	tileIndex += numberOfTiles;
+
+	auto remainingDistance{ abs(distance - numberOfTiles * partSize) };
+
+	if (remainingDistance <= 0)
+	{
+		forward = turnPointStore.getTurnPoints()[turnPointIndex].getDirectionFrom();
+		return;
+	}
+
+	if (tileIndex >= meshRenderers.size())
+	{
+		return;
+	}
+
+	fillInRemainingDistanceToTurnPoint(turnPointIndex, tileIndex, position, forward);
+}
+
+void Snake::fillInRemainingDistanceToTurnPoint(size_t& turnPointIndex, size_t& tileIndex, sf::Vector2f& position, sf::Vector2f& forward)
+{
+	float availableDistance{ partSize };
+	for (size_t j{ turnPointIndex }; j < turnPointStore.getTurnPoints().size(); ++j)
+	{
+		auto currentTurnPoint{ turnPointStore.getTurnPoints()[j] };
+		auto distanceBetween{ Maths::magnitude(position - currentTurnPoint.getPosition()) };
+		if (distanceBetween > availableDistance)
+		{
+			forward = currentTurnPoint.getDirectionTo();
+			--turnPointIndex;
+			break;
+		}
+		availableDistance -= distanceBetween;
+		position = currentTurnPoint.getPosition();
+		forward = currentTurnPoint.getDirectionFrom();
+		++turnPointIndex;
+	}
+	if (availableDistance > 0)
+	{
+		position -= availableDistance * forward;
+	}
+	meshRenderers[tileIndex]->updatePosition(position);
+	tileIndex++;
+}
+
+void Snake::fillInDistanceAfterTurnPoints(sf::Vector2f& position, sf::Vector2f& forward, size_t& tileIndex)
+{
+	for (; tileIndex < meshRenderers.size(); ++tileIndex)
+	{
+		position -= partSize * forward;
+		meshRenderers[tileIndex]->updatePosition(position);
+	}
 }
