@@ -1,6 +1,6 @@
 #include "CollisionSystem.h"
 
-CollisionSystem::CollisionSystem(vector<ObjectCollider>& objectColliders)
+CollisionSystem::CollisionSystem(std::vector<ObjectCollider>& objectColliders)
 	:
 	objectColliders{ objectColliders }
 {

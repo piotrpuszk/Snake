@@ -3,8 +3,6 @@
 #include "Transform.h"
 #include "GameObject.h"
 
-using namespace std;
-
 class SnakeMovement : public GameObject, public Component
 {
 public:

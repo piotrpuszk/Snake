@@ -3,15 +3,13 @@
 #include <SFML/Graphics.hpp>
 #include "ObjectCollider.h"
 
-using namespace std;
-
 class CollisionSystem
 {
 public:
-	CollisionSystem(vector<ObjectCollider>& objectColliders);
+	CollisionSystem(std::vector<ObjectCollider>& objectColliders);
 
 	void checkCollisions();
 private:
-	vector<ObjectCollider>& objectColliders;
+	std::vector<ObjectCollider>& objectColliders;
 };
 

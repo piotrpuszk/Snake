@@ -153,6 +153,7 @@
     <ClCompile Include="Orientation.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Snake.cpp" />
+    <ClCompile Include="SnakeComponentPositionIterator.cpp" />
     <ClCompile Include="SnakeMovement.cpp" />
     <ClCompile Include="TextureStore.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Snake.h" />
+    <ClInclude Include="SnakeComponentPositionIterator.h" />
     <ClInclude Include="SnakeMovement.h" />
     <ClInclude Include="TextureStore.h" />
     <ClInclude Include="Transform.h" />

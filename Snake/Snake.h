@@ -6,11 +6,13 @@
 #include "SnakeMovement.h"
 #include "MeshRenderer.h"
 #include "TurnPointStore.h"
+#include "SnakeComponentPositionIterator.h"
+#include "BoxCollider.h"
 
 class Snake : public GameObject, public Component
 {
 public:
-	Snake(TurnPointStore turnPointStore, float partSize);
+	Snake(std::shared_ptr<TurnPointStore> turnPointStore, SnakeComponentPositionIterator snakeComponentPositionIterator);
 	void awake() override;
 	template<typename T>
 	T* getComponent();
@@ -19,22 +21,20 @@ protected:
 	void fixedUpdate() override;
 	void onEnterCollision(GameObject& gameObject) override;
 private:
-	TurnPointStore turnPointStore;
-	float partSize;
+	std::shared_ptr<TurnPointStore> turnPointStore;
+	SnakeComponentPositionIterator snakeComponentPositionIterator;
 	SnakeMovement* snakeMovement;
 	Transform* transform;
-	vector<MeshRenderer*> meshRenderers;
+	std::vector<MeshRenderer*> meshRenderers;
+	std::vector<BoxCollider*> boxColliders;
 
 	void turn(sf::Vector2f direction);
 	void move();
 	void onEatFruit();
 	void grow(int amount);
 	bool canTurn(sf::Vector2f direction) const noexcept;
-	void updateMeshRendererPositions();
-
-	void fillInDistanceToTurnPoint(size_t& turnPointIndex, size_t& tileIndex, sf::Vector2f& forward, sf::Vector2f& position);
-	void fillInRemainingDistanceToTurnPoint(size_t& turnPointIndex, size_t& tileIndex, sf::Vector2f& position, sf::Vector2f& forward);
-	void fillInDistanceAfterTurnPoints(sf::Vector2f& position, sf::Vector2f& forward, size_t& tileIndex);
+	void updateComponentsPositions();
+	void removeUsedUpTurnPoints();
 };
 
 template<typename T>

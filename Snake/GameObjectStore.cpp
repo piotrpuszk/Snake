@@ -7,7 +7,7 @@ GameObjectStore::GameObjectStore()
 {
 }
 
-void GameObjectStore::addGameObject(shared_ptr<GameObject> gameObject)
+void GameObjectStore::addGameObject(std::shared_ptr<GameObject> gameObject)
 {
 	gameObjects.push_back(gameObject);
 	for (auto meshRenderer: gameObject->getComponents<MeshRenderer>())
@@ -16,7 +16,7 @@ void GameObjectStore::addGameObject(shared_ptr<GameObject> gameObject)
 	}
 }
 
-void GameObjectStore::addGameObjects(vector<shared_ptr<GameObject>> gameObjects)
+void GameObjectStore::addGameObjects(std::vector<std::shared_ptr<GameObject>> gameObjects)
 {
 	for (auto go : gameObjects)
 	{
@@ -24,17 +24,17 @@ void GameObjectStore::addGameObjects(vector<shared_ptr<GameObject>> gameObjects)
 	}
 }
 
-vector<shared_ptr<GameObject>> GameObjectStore::getGameObjects()
+std::vector<std::shared_ptr<GameObject>> GameObjectStore::getGameObjects()
 {
 	return gameObjects;
 }
 
-vector<MeshRenderer*> GameObjectStore::getMeshRenderers()
+std::vector<MeshRenderer*> GameObjectStore::getMeshRenderers()
 {
 	return meshRenderers;
 }
 
-void GameObjectStore::deleteGameObject(shared_ptr<GameObject> gameObject)
+void GameObjectStore::deleteGameObject(std::shared_ptr<GameObject> gameObject)
 {
 	std::erase(gameObjects, gameObject);
 	std::erase_if(meshRenderers, [&](const auto meshRenderer) { return &*meshRenderer == &*gameObject.get()->getComponent<MeshRenderer>(); });

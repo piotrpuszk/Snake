@@ -3,8 +3,6 @@
 #include <vector>
 #include "GameObjectStore.h"
 
-using namespace std;
-
 class Renderer
 {
 public:

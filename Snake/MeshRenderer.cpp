@@ -16,7 +16,7 @@ void MeshRenderer::rotate(float angle) noexcept
 	sprite.rotate(angle);
 }
 
-void MeshRenderer::updatePosition(sf::Vector2f position)
+void MeshRenderer::setPosition(sf::Vector2f position)
 {
 	sprite.setPosition(position);
 }

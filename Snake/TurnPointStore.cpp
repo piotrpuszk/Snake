@@ -38,6 +38,11 @@ void TurnPointStore::remove(std::vector<TurnPoint>& turnPoints)
 	}
 }
 
+void TurnPointStore::remove(std::vector<TurnPoint>& turnPoints, int startIndex)
+{
+	std::for_each(std::begin(turnPoints) + startIndex, std::end(turnPoints), [&](auto& e) { remove(e); });
+}
+
 void TurnPointStore::markForRemoval(TurnPoint& turnPoint)
 {
 	markedForRemoval.push_back(turnPoint);

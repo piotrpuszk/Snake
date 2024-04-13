@@ -3,8 +3,6 @@
 #include <memory>
 #include "Component.h"
 
-using namespace std;
-
 class GameObject
 {
 public:
@@ -20,17 +18,17 @@ public:
 
 	template <typename T>
 	T* getComponent();
-	shared_ptr<Component> getComponent();
-	vector<shared_ptr<Component>> getComponents();
+	std::shared_ptr<Component> getComponent();
+	std::vector<std::shared_ptr<Component>> getComponents();
 	template <typename T>
-	vector<T*> getComponents();
+	std::vector<T*> getComponents();
 
 	template <typename T, typename... Types>
 	T* addComponent(Types... args);
-	void addComponent(shared_ptr<Component> component);
+	void addComponent(std::shared_ptr<Component> component);
 private:
 	int id;
-	vector<shared_ptr<Component>> components;
+	std::vector<std::shared_ptr<Component>> components;
 	static int idSequence;
 };
 
@@ -49,9 +47,9 @@ inline T* GameObject::getComponent()
 }
 
 template<typename T>
-inline vector<T*> GameObject::getComponents()
+inline std::vector<T*> GameObject::getComponents()
 {
-	vector<T*> result{};
+	std::vector<T*> result{};
 	for (auto component : components)
 	{
 		if (typeid(*component) == typeid(T))

@@ -10,7 +10,7 @@ public:
 
 	sf::Sprite getSprite() const noexcept;
 	void rotate(float angle) noexcept;
-	void updatePosition(sf::Vector2f position);
+	void setPosition(sf::Vector2f position);
 private:
 	sf::Sprite sprite;
 };
