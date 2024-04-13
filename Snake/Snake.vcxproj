@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="CollisionResponse.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameLoop.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="WorldDirection.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CollisionResponse.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameLoop.h" />

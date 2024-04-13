@@ -10,15 +10,14 @@ BoxCollider::BoxCollider(Transform* transform, sf::Vector2f position, sf::Vector
 
 bool BoxCollider::isColliding(BoxCollider other)
 {
-	auto otherPosition{ other.getPosition() };
-	auto otherHalfSize{ other.getSize() * 0.5f };
+	auto otherHalfSize{ other.size * 0.5f };
 
 	std::vector<sf::Vector2f> corners
 	{
-		sf::Vector2f{ otherPosition.x - otherHalfSize.x, otherPosition.y + otherHalfSize.y },
-		sf::Vector2f{ otherPosition.x + otherHalfSize.x, otherPosition.y + otherHalfSize.y },
-		sf::Vector2f{ otherPosition.x - otherHalfSize.x, otherPosition.y - otherHalfSize.y },
-		sf::Vector2f{ otherPosition.x + otherHalfSize.x, otherPosition.y - otherHalfSize.y },
+		sf::Vector2f{ other.position.x - otherHalfSize.x, other.position.y + otherHalfSize.y },
+		sf::Vector2f{ other.position.x + otherHalfSize.x, other.position.y + otherHalfSize.y },
+		sf::Vector2f{ other.position.x - otherHalfSize.x, other.position.y - otherHalfSize.y },
+		sf::Vector2f{ other.position.x + otherHalfSize.x, other.position.y - otherHalfSize.y },
 	};
 
 	auto halfSize = size * 0.5f;
@@ -28,31 +27,25 @@ bool BoxCollider::isColliding(BoxCollider other)
 
 	for (const auto& corner : corners)
 	{
-		if (corner.x >= xRange.x && corner.x <= xRange.y && corner.y >= yRange.x && corner.y <= yRange.y)
+		if (corner.x > xRange.x && corner.x < xRange.y && corner.y > yRange.x && corner.y < yRange.y)
 		{
 			return true;
+		}
+		if (corner.x == xRange.x && corner.x == xRange.y && corner.y == yRange.x && corner.y == yRange.y)
+		{
+			return transform->getForward() != other.transform->getForward();
 		}
 	}
 
 	return false;
 }
 
-void BoxCollider::setPosition(sf::Vector2f value)
-{
-	position = value;
-}
-
-Transform* BoxCollider::getTransform() const noexcept
-{
-	return transform;
-}
-
-sf::Vector2f BoxCollider::getPosition() const noexcept
+sf::Vector2f& BoxCollider::getPosition()
 {
 	return position;
 }
 
-sf::Vector2f BoxCollider::getSize() const noexcept
+void BoxCollider::setPosition(sf::Vector2f value)
 {
-	return size;
+	position = value;
 }

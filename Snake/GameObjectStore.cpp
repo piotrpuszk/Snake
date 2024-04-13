@@ -3,39 +3,49 @@
 GameObjectStore::GameObjectStore()
 	:
 	gameObjects{},
-	meshRenderers{}
+	meshRenderers{},
+	gameObjectRawPointers{}
 {
 }
 
-void GameObjectStore::addGameObject(std::shared_ptr<GameObject> gameObject)
+GameObject* GameObjectStore::addGameObject(std::unique_ptr<GameObject> gameObject)
 {
-	gameObjects.push_back(gameObject);
 	for (auto meshRenderer: gameObject->getComponents<MeshRenderer>())
 	{
 		meshRenderers.push_back(meshRenderer);
 	}
+
+	gameObjects.push_back(std::move(gameObject));
+	gameObjectRawPointers.push_back(gameObjects[gameObjects.size() - 1].get());
+	return gameObjectRawPointers[gameObjectRawPointers.size() - 1];
 }
 
-void GameObjectStore::addGameObjects(std::vector<std::shared_ptr<GameObject>> gameObjects)
+std::vector<GameObject*> GameObjectStore::addGameObjects(std::vector<std::unique_ptr<GameObject>> gameObjects)
 {
-	for (auto go : gameObjects)
+	std::vector<GameObject*> result{};
+	for (auto& go : gameObjects)
 	{
-		addGameObject(go);
+		result.push_back(addGameObject(std::move(go)));
 	}
+	return result;
 }
 
-std::vector<std::shared_ptr<GameObject>> GameObjectStore::getGameObjects()
+std::vector<GameObject*>& GameObjectStore::getGameObjects()
 {
-	return gameObjects;
+	return gameObjectRawPointers;
 }
 
-std::vector<MeshRenderer*> GameObjectStore::getMeshRenderers()
+std::vector<MeshRenderer*>& GameObjectStore::getMeshRenderers()
 {
 	return meshRenderers;
 }
 
-void GameObjectStore::deleteGameObject(std::shared_ptr<GameObject> gameObject)
+void GameObjectStore::deleteGameObject(GameObject* gameObject)
 {
-	std::erase(gameObjects, gameObject);
-	std::erase_if(meshRenderers, [&](const auto meshRenderer) { return &*meshRenderer == &*gameObject.get()->getComponent<MeshRenderer>(); });
+	for (const auto& meshRenderer : gameObject->getComponents<MeshRenderer>())
+	{
+		std::erase_if(meshRenderers, [&](const auto e) { return &*e == &*meshRenderer; });
+	}
+	std::erase_if(gameObjectRawPointers, [&](const auto e) { return &*e == &*gameObject; });
+	std::erase_if(gameObjects, [&](const auto& e) { return &*e == &*gameObject; });
 }

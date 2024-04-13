@@ -9,10 +9,8 @@ public:
 	~BoxCollider() = default;
 
 	bool isColliding(BoxCollider other);
+	sf::Vector2f& getPosition();
 	void setPosition(sf::Vector2f value);
-	Transform* getTransform() const noexcept;
-	sf::Vector2f getPosition() const noexcept;
-	sf::Vector2f getSize() const noexcept;
 private:
 	Transform* transform;
 	sf::Vector2f size;

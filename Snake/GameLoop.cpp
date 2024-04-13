@@ -33,6 +33,7 @@ void GameLoop::execute()
 	update();
 	while (lag >= fixedTimeStep)
 	{
+		collisionCheck();
 		fixedUpdate();
 		lag -= fixedTimeStep;
 	}

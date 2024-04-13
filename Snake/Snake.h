@@ -12,7 +12,7 @@
 class Snake : public GameObject, public Component
 {
 public:
-	Snake(std::shared_ptr<TurnPointStore> turnPointStore, SnakeComponentPositionIterator snakeComponentPositionIterator);
+	Snake(std::unique_ptr<TurnPointStore> turnPointStore, SnakeComponentPositionIterator snakeComponentPositionIterator);
 	void awake() override;
 	template<typename T>
 	T* getComponent();
@@ -21,7 +21,7 @@ protected:
 	void fixedUpdate() override;
 	void onEnterCollision(GameObject& gameObject) override;
 private:
-	std::shared_ptr<TurnPointStore> turnPointStore;
+	std::unique_ptr<TurnPointStore> turnPointStore;
 	SnakeComponentPositionIterator snakeComponentPositionIterator;
 	SnakeMovement* snakeMovement;
 	Transform* transform;
@@ -35,6 +35,7 @@ private:
 	bool canTurn(sf::Vector2f direction) const noexcept;
 	void updateComponentsPositions();
 	void removeUsedUpTurnPoints();
+	bool IsEatingItself();
 };
 
 template<typename T>

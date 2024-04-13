@@ -4,7 +4,7 @@
 class SnakeComponentPositionIterator
 {
 public:
-	SnakeComponentPositionIterator(std::shared_ptr<TurnPointStore> turnPointStore, size_t positionCount, float elementSize);
+	SnakeComponentPositionIterator(TurnPointStore* turnPointStore, size_t positionCount, float elementSize);
 	std::vector<sf::Vector2f> getPositions(sf::Vector2f startPosition, sf::Vector2f forward);
 private:
 	std::vector<sf::Vector2f> getPositionsToTurnPoint(size_t& turnPointIndex);
@@ -12,7 +12,7 @@ private:
 	std::vector<sf::Vector2f> getPositionsAfterTurnPoint();
 	void updateTurnPointsMarkedForRemoval(size_t& turnPointIndex);
 	void onPositionAdded(size_t turnPointIndex);
-	std::shared_ptr<TurnPointStore> turnPointStore;
+	TurnPointStore* turnPointStore;
 	size_t positionCount;
 	size_t positionCounter;
 	float elementSize;

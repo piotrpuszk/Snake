@@ -96,6 +96,9 @@
     <ClCompile Include="SnakeComponentPositionIterator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionResponse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLoop.h">
@@ -177,6 +180,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SnakeComponentPositionIterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionResponse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

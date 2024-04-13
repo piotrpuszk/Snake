@@ -4,11 +4,10 @@
 #include "GameObjectInstantiator.h"
 #include "Maths.h"
 #include <cmath>
-#include <iostream>
 
-Snake::Snake(std::shared_ptr<TurnPointStore> turnPointStore, SnakeComponentPositionIterator snakeComponentPositionIterator)
+Snake::Snake(std::unique_ptr<TurnPointStore> turnPointStore, SnakeComponentPositionIterator snakeComponentPositionIterator)
 	:
-	turnPointStore{ turnPointStore },
+	turnPointStore{ std::move(turnPointStore) },
 	snakeComponentPositionIterator{ snakeComponentPositionIterator },
 	snakeMovement{},
 	transform{},
@@ -50,10 +49,15 @@ void Snake::fixedUpdate()
 	move();
 	updateComponentsPositions();
 	removeUsedUpTurnPoints();
+	if (IsEatingItself())
+	{
+		GameObjectInstantiator::destroy(this);
+	}
 }
 
 void Snake::onEnterCollision(GameObject& gameObject)
 {
+
 }
 
 void Snake::turn(sf::Vector2f direction)
@@ -99,4 +103,26 @@ void Snake::updateComponentsPositions()
 void Snake::removeUsedUpTurnPoints()
 {
 	turnPointStore->removeMarked();
+}
+
+bool Snake::IsEatingItself()
+{
+	auto head{ boxColliders[0] };
+
+	for (size_t i{ 1 }; i < boxColliders.size(); i++)
+	{
+		auto other{ boxColliders[i] };
+
+
+		if (head->isColliding(*other))
+		{
+			auto fromOtherToItself{ transform->getPosition() - other->getPosition() };
+			if (Maths::dot(transform->getForward(), fromOtherToItself) < 0)
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

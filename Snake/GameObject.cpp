@@ -14,12 +14,7 @@ int GameObject::getId() const noexcept
 	return id;
 }
 
-std::vector<std::shared_ptr<Component>> GameObject::getComponents()
+void GameObject::addComponent(std::unique_ptr<Component> component)
 {
-	return components;
-}
-
-void GameObject::addComponent(std::shared_ptr<Component> component)
-{
-	components.push_back(component);
+	components.push_back(std::move(component));
 }

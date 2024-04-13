@@ -5,7 +5,6 @@
 #include <vector>
 #include "GameObjectStore.h"
 
-
 class GameLoop
 {
 public:

@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <vector>
-#include <iostream>
 #include "GameObjectFactory.h"
 #include "Renderer.h"
 #include "GameSettings.h"
@@ -20,9 +19,11 @@ int main()
 	auto snake = gameObjectFactory.createSnake();
 	GameSettings gameSettings{ sf::seconds(0.02f), {800, 600} };
 	std::vector<ObjectCollider> objectColliders{};
-	GameObject* snakeGO = snake.get();
 	Renderer renderer{ gameObjectStore };
-	objectColliders.push_back(ObjectCollider{ snakeGO, snakeGO->getComponent<BoxCollider>() });
+	for (const auto& e : snake->getComponents<BoxCollider>())
+	{
+		objectColliders.push_back(ObjectCollider{ snake, e});
+	}
 	CollisionSystem collisionSystem{ objectColliders };
 	GameLoop gameLoop{ gameObjectStore, gameSettings, renderer, collisionSystem, window };
 	KeyHandler::initialize();

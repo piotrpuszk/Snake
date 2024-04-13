@@ -9,13 +9,14 @@ class GameObjectStore
 {
 public:
 	GameObjectStore();
-	void addGameObject(std::shared_ptr<GameObject> gameObject);
-	void addGameObjects(std::vector<std::shared_ptr<GameObject>> gameObjects);
-	std::vector<std::shared_ptr<GameObject>> getGameObjects();
-	std::vector<MeshRenderer*> getMeshRenderers();
-	void deleteGameObject(std::shared_ptr<GameObject> gameObject);
+	GameObject* addGameObject(std::unique_ptr<GameObject> gameObject);
+	std::vector<GameObject*> addGameObjects(std::vector<std::unique_ptr<GameObject>> gameObjects);
+	std::vector<GameObject*>& getGameObjects();
+	std::vector<MeshRenderer*>& getMeshRenderers();
+	void deleteGameObject(GameObject* gameObject);
 private:
-	std::vector<std::shared_ptr<GameObject>> gameObjects;
+	std::vector<std::unique_ptr<GameObject>> gameObjects;
 	std::vector<MeshRenderer*> meshRenderers;
+	std::vector<GameObject*> gameObjectRawPointers;
 };
 

@@ -1,5 +1,4 @@
 #include "TurnPoint.h"
-#include <iostream>
 
 TurnPoint::TurnPoint(sf::Vector2f position, sf::Vector2f directionFrom, sf::Vector2f directionTo)
 	:

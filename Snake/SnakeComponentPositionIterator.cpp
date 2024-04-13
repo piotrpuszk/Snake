@@ -1,7 +1,7 @@
 #include "SnakeComponentPositionIterator.h"
 #include "Maths.h"
 
-SnakeComponentPositionIterator::SnakeComponentPositionIterator(std::shared_ptr<TurnPointStore> turnPointStore, size_t positionCount, float elementSize)
+SnakeComponentPositionIterator::SnakeComponentPositionIterator(TurnPointStore* turnPointStore, size_t positionCount, float elementSize)
 	:
 	turnPointStore{ turnPointStore },
 	positionCount{ positionCount },

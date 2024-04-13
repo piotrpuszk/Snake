@@ -18,24 +18,22 @@ public:
 
 	template <typename T>
 	T* getComponent();
-	std::shared_ptr<Component> getComponent();
-	std::vector<std::shared_ptr<Component>> getComponents();
 	template <typename T>
 	std::vector<T*> getComponents();
 
 	template <typename T, typename... Types>
 	T* addComponent(Types... args);
-	void addComponent(std::shared_ptr<Component> component);
+	void addComponent(std::unique_ptr<Component> component);
 private:
 	int id;
-	std::vector<std::shared_ptr<Component>> components;
+	std::vector<std::unique_ptr<Component>> components;
 	static int idSequence;
 };
 
 template<typename T>
 inline T* GameObject::getComponent()
 {
-	for (auto component : components)
+	for (const auto& component : components)
 	{
 		if (typeid(*component) == typeid(T))
 		{
@@ -50,7 +48,7 @@ template<typename T>
 inline std::vector<T*> GameObject::getComponents()
 {
 	std::vector<T*> result{};
-	for (auto component : components)
+	for (const auto& component : components)
 	{
 		if (typeid(*component) == typeid(T))
 		{
@@ -64,6 +62,6 @@ inline std::vector<T*> GameObject::getComponents()
 template <typename T, typename... Types>
 inline T* GameObject::addComponent(Types... args)
 {
-	components.push_back(make_shared<T>(args...));
+	components.push_back(make_unique<T>(args...));
 	return dynamic_cast<T*>(components.back().get());
 }
