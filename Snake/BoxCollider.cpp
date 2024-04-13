@@ -1,6 +1,6 @@
 #include "BoxCollider.h"
 
-BoxCollider::BoxCollider(Transform& transform, sf::Vector2f size)
+BoxCollider::BoxCollider(Transform* transform, sf::Vector2f size)
 	:
 	transform{ transform },
 	size{ size }
@@ -9,7 +9,7 @@ BoxCollider::BoxCollider(Transform& transform, sf::Vector2f size)
 
 bool BoxCollider::isColliding(BoxCollider other)
 {
-	auto otherPosition = other.getTransform().getPosition();
+	auto otherPosition = other.getTransform()->getPosition();
 	auto otherHalfSize = other.getSize() * 0.5f;
 
 	vector<sf::Vector2f> corners
@@ -22,8 +22,8 @@ bool BoxCollider::isColliding(BoxCollider other)
 
 	auto halfSize = size * 0.5f;
 
-	sf::Vector2f xRange{ transform.getPosition().x - halfSize.x, transform.getPosition().x + halfSize.x };
-	sf::Vector2f yRange{ transform.getPosition().y - halfSize.y, transform.getPosition().y + halfSize.y };
+	sf::Vector2f xRange{ transform->getPosition().x - halfSize.x, transform->getPosition().x + halfSize.x };
+	sf::Vector2f yRange{ transform->getPosition().y - halfSize.y, transform->getPosition().y + halfSize.y };
 
 	for (const auto& corner : corners)
 	{
@@ -36,7 +36,7 @@ bool BoxCollider::isColliding(BoxCollider other)
 	return false;
 }
 
-Transform& BoxCollider::getTransform() const noexcept
+Transform* BoxCollider::getTransform() const noexcept
 {
 	return transform;
 }

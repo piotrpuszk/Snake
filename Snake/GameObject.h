@@ -22,6 +22,8 @@ public:
 	T* getComponent();
 	shared_ptr<Component> getComponent();
 	vector<shared_ptr<Component>> getComponents();
+	template <typename T>
+	vector<T*> getComponents();
 
 	template <typename T, typename... Types>
 	T* addComponent(Types... args);
@@ -44,6 +46,21 @@ inline T* GameObject::getComponent()
 	}
 
 	return nullptr;
+}
+
+template<typename T>
+inline vector<T*> GameObject::getComponents()
+{
+	vector<T*> result{};
+	for (auto component : components)
+	{
+		if (typeid(*component) == typeid(T))
+		{
+			result.emplace_back(dynamic_cast<T*>(component.get()));
+		}
+	}
+
+	return result;
 }
 
 template <typename T, typename... Types>

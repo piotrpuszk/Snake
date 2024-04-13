@@ -10,8 +10,7 @@ GameObjectStore::GameObjectStore()
 void GameObjectStore::addGameObject(shared_ptr<GameObject> gameObject)
 {
 	gameObjects.push_back(gameObject);
-	auto meshRenderer = gameObject->getComponent<MeshRenderer>();
-	if (meshRenderer)
+	for (auto meshRenderer: gameObject->getComponents<MeshRenderer>())
 	{
 		meshRenderers.push_back(meshRenderer);
 	}

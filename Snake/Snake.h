@@ -2,48 +2,38 @@
 #include <vector>
 #include <memory>
 #include "GameObject.h"
-#include "SnakePart.h"
+#include "TurnPoint.h"
+#include "SnakeMovement.h"
+#include "MeshRenderer.h"
 
 class Snake : public GameObject, public Component
 {
 public:
-	Snake() = default;
-	Snake(vector<shared_ptr<SnakePart>> parts);
+	Snake();
 	void awake() override;
 	template<typename T>
 	T* getComponent();
-	template<typename T>
-	std::vector<T*> getComponentsInChildren();
 protected:
 	void update() override;
 	void fixedUpdate() override;
 	void onEnterCollision(GameObject& gameObject) override;
 private:
-	vector<shared_ptr<SnakePart>> parts;
-	vector<shared_ptr<SnakePart>> turnPointWorkarounds;
+	vector<TurnPoint> turnPoints;
+	SnakeMovement* snakeMovement;
+	Transform* transform;
+	vector<MeshRenderer*> meshRenderers;
 
 	void turn(sf::Vector2f direction);
 	void move();
 	void onEatFruit();
 	void grow(int amount);
 	bool canTurn(sf::Vector2f direction) const noexcept;
+	void updateMeshRendererPositions();
+	void eraseTurnPoint(TurnPoint turnPoint);
 };
 
 template<typename T>
 inline T* Snake::getComponent()
 {
 	return GameObject::getComponent<T>();
-}
-
-template<typename T>
-inline std::vector<T*> Snake::getComponentsInChildren()
-{
-	std::vector<T*> result{};
-
-	for (auto& part : parts)
-	{
-		result.push_back(part.getComponent<T>());
-	}
-
-	return result;
 }

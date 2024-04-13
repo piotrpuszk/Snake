@@ -10,13 +10,13 @@ C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\GameSettings.cpp;C:\Us
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\KeyHandler.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\KeyHandler.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\main.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\main.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Map.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\Map.obj
+C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Maths.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\Maths.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\MeshRenderer.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\MeshRenderer.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\ObjectCollider.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\ObjectCollider.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Orientation.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\Orientation.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Renderer.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\Renderer.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Snake.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\Snake.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\SnakeMovement.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\SnakeMovement.obj
-C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\SnakePart.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\SnakePart.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\TextureStore.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\TextureStore.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\Transform.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\Transform.obj
 C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\TurnPoint.cpp;C:\Users\piotr\Documents\personal\vs-projects\Snake\Snake\x64\Debug\TurnPoint.obj

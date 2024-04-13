@@ -54,16 +54,6 @@ void GameLoop::handleUserInput()
 
 void GameLoop::render()
 {
-	for (auto& go : gameObjectStore.getGameObjects())
-	{
-		auto transform = go->getComponent<Transform>();
-		auto meshRenderer = go->getComponent<MeshRenderer>();
-		if (transform && meshRenderer)
-		{
-			meshRenderer->updatePosition(transform->getPosition());
-		}
-	}
-
 	renderer.render(renderWindow);
 }
 

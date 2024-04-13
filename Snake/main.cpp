@@ -13,7 +13,7 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1920, 1080), "My window");
+	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
 	TextureStore textureStore{};
 	GameObjectStore gameObjectStore{};
 	GameObjectFactory gameObjectFactory{ textureStore, gameObjectStore };

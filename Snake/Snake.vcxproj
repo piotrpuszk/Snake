@@ -147,13 +147,13 @@
     <ClCompile Include="KeyHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Maths.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="ObjectCollider.cpp" />
     <ClCompile Include="Orientation.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Snake.cpp" />
     <ClCompile Include="SnakeMovement.cpp" />
-    <ClCompile Include="SnakePart.cpp" />
     <ClCompile Include="TextureStore.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TurnPoint.cpp" />
@@ -172,6 +172,7 @@
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="KeyHandler.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Maths.h" />
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="ObjectCollider.h" />
     <ClInclude Include="Orientation.h" />
@@ -179,7 +180,6 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Snake.h" />
     <ClInclude Include="SnakeMovement.h" />
-    <ClInclude Include="SnakePart.h" />
     <ClInclude Include="TextureStore.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TurnPoint.h" />

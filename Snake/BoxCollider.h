@@ -7,13 +7,13 @@ using namespace std;
 
 class BoxCollider : public Component {
 public:
-	BoxCollider(Transform& transform, sf::Vector2f size);
+	BoxCollider(Transform* transform, sf::Vector2f size);
 	~BoxCollider() = default;
 
 	bool isColliding(BoxCollider other);
-	Transform& getTransform() const noexcept;
+	Transform* getTransform() const noexcept;
 	sf::Vector2f getSize() const noexcept;
 private:
-	Transform& transform;
+	Transform* transform;
 	sf::Vector2f size;
 };

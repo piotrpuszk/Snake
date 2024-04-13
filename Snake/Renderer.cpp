@@ -10,7 +10,7 @@ void Renderer::render(sf::RenderWindow& window)
 {
 	window.clear(sf::Color::Black);
 
-	for (auto meshRenderer : gameObjectStore.getMeshRenderers())
+	for (auto& meshRenderer : gameObjectStore.getMeshRenderers())
 	{
 		window.draw(meshRenderer->getSprite());
 	}
