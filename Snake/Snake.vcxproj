@@ -144,6 +144,7 @@
     <ClCompile Include="GameObjectInstantiator.cpp" />
     <ClCompile Include="GameObjectStore.cpp" />
     <ClCompile Include="GameSettings.cpp" />
+    <ClCompile Include="SpawnerOfConsumables.cpp" />
     <ClCompile Include="KeyHandler.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Maths.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="GameObjectStore.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="SpawnerOfConsumables.h" />
     <ClInclude Include="KeyHandler.h" />
     <ClInclude Include="Maths.h" />
     <ClInclude Include="MeshRenderer.h" />

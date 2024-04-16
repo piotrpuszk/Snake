@@ -1,6 +1,7 @@
 #include "GameLoop.h"
 #include "UserInputHandler.h"
 #include "GameObjectInstantiator.h"
+#include <iostream>
 
 GameLoop::GameLoop(GameObjectStore& gameObjectStore,
 	const GameSettings& gameSettings,
@@ -34,7 +35,7 @@ void GameLoop::execute()
 	update();
 	while (lag >= fixedTimeStep)
 	{
-		collisionCheck();
+		checkCollisions();
 		fixedUpdate();
 		lag -= fixedTimeStep;
 	}
@@ -44,17 +45,21 @@ void GameLoop::execute()
 
 void GameLoop::update()
 {
-	for (auto& go : gameObjectStore.getGameObjects())
+	const auto& size = gameObjectStore.getGameObjects().size();
+	const auto& gameObjects = gameObjectStore.getGameObjects();
+	for (size_t i{}; i < size; ++i)
 	{
-		go->update();
+		gameObjects[i]->update();
 	}
 }
 
 void GameLoop::fixedUpdate()
 {
-	for (auto& go : gameObjectStore.getGameObjects())
+	const auto& size = gameObjectStore.getGameObjects().size();
+	const auto& gameObjects = gameObjectStore.getGameObjects();
+	for (size_t i{}; i < size; ++i)
 	{
-		go->fixedUpdate();
+		gameObjects[i]->fixedUpdate();
 	}
 }
 
@@ -69,7 +74,7 @@ void GameLoop::render() const
 	renderer.render(renderWindow);
 }
 
-void GameLoop::collisionCheck() const
+void GameLoop::checkCollisions() const
 {
 	collisionSystem.checkCollisions();
 }

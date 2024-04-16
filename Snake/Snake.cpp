@@ -55,14 +55,16 @@ void Snake::fixedUpdate()
 	const auto& positions = generatorOfSnakePartPositions.getPositions(transform->getPosition(), transform->getForward());
 	updateComponentsPositions(positions);
 	removeUsedUpTurnPoints(positions);
+	if (isEatingItself(positions))
+	{
+		std::cout << "Game over!\n";
+		GameObjectInstantiator::destroy(this);
+	}
 }
 
 void Snake::onEnterCollision(GameObject* gameObject)
 {
-	if (isEatingItself())
-	{
-		GameObjectInstantiator::destroy(this);
-	}
+
 
 	if (isEatingFood(gameObject))
 	{
@@ -97,14 +99,13 @@ void Snake::grow(int amount)
 	for (size_t i = 0; i < amount; i++)
 	{
 		addComponent<MeshRenderer>(meshRenderers[0]->getSprite());
-		addComponent<BoxCollider>(transform, transform->getPosition(), boxColliders[0]->getSize());
 		generatorOfSnakePartPositions.increasePositionCount();
 	}
 	boxColliders = getComponents<BoxCollider>();
 	meshRenderers = getComponents<MeshRenderer>();
 	auto& turnPoints = turnPointStore->getTurnPoints();
-	std::erase_if(meshRenderers, [&](auto& meshRenderer) 
-		{ 
+	std::erase_if(meshRenderers, [&](auto& meshRenderer)
+		{
 			for (auto& turnPoint : turnPoints)
 			{
 				if (&*meshRenderer == &*turnPoint.getMeshRenderer())
@@ -124,10 +125,14 @@ bool Snake::canTurn(sf::Vector2f direction) const noexcept
 
 void Snake::updateComponentsPositions(std::vector<sf::Vector2f> positions)
 {
+	if (!positions.empty())
+	{
+		boxColliders[0]->setPosition(positions[0]);
+	}
+
 	for (size_t i{}; i < positions.size(); i++)
 	{
 		meshRenderers[i]->setPosition(positions[i]);
-		boxColliders[i]->setPosition(positions[i]);
 	}
 }
 
@@ -148,29 +153,68 @@ void Snake::removeUsedUpTurnPoints(std::vector<sf::Vector2f> positions)
 	}
 }
 
-bool Snake::isEatingFood(GameObject* gameObject) const
+bool Snake::isEatingItself(std::vector<sf::Vector2f> positions) const
 {
-	return dynamic_cast<Consumable*>(gameObject) != nullptr;
-}
+	const auto& turnPoints{ turnPointStore->getTurnPoints() };
 
-bool Snake::isEatingItself() const
-{
-	auto head{ boxColliders[0] };
-
-	for (size_t i{ 1 }; i < boxColliders.size(); i++)
+	if (turnPoints.size() < 2)
 	{
-		auto other{ boxColliders[i] };
+		return false;
+	}
 
-		if (head->isColliding(*other))
+	const auto& head{ transform->getPosition() };
+	const auto& halfSize{ boxColliders[0]->getSize().x / 2.f };
+
+	std::vector<sf::Vector2f> headCorners
+	{ 
+		{ head.x - halfSize, head.y - halfSize }, 
+		{ head.x + halfSize, head.y - halfSize },
+		{ head.x - halfSize, head.y + halfSize },
+		{ head.x + halfSize, head.y + halfSize } 
+	};
+
+	float x1{};
+	float y1{};
+	float x2{};
+	float y2{};
+
+	for (size_t i{ 1 }; i < turnPoints.size(); i++)
+	{
+		auto position1{ turnPoints[i].getPosition() };
+		auto position2{ i + 1 == turnPoints.size() ? positions[positions.size() - 1] : turnPoints[i + 1].getPosition() };
+
+		if (position1.y == position2.y)
 		{
-			auto fromOtherToItself{ transform->getPosition() - other->getPosition() };
+			x1 = position1.x < position2.x ? position1.x : position2.x;
+			y1 = position1.y;
+			x2 = position1.x > position2.x ? position1.x : position2.x;
+			y2 = position1.y;
+		}
+		else if (position1.x == position2.x)
+		{
+			y1 = position1.y < position2.y ? position1.y : position2.y;
+			x1 = position1.x;
+			y2 = position1.y > position2.y ? position1.y : position2.y;
+			x2 = position1.x;
+		}
 
-			if (Maths::dot(transform->getForward(), fromOtherToItself) < 0)
+		for (const auto& e : headCorners)
+		{
+			if (e.x >= x1 - halfSize
+				&& e.x <= x2 + halfSize
+				&& e.y >= y1 - halfSize
+				&& e.y <= y2 + halfSize)
 			{
 				return true;
 			}
 		}
+
 	}
 
 	return false;
+}
+
+bool Snake::isEatingFood(GameObject* gameObject) const
+{
+	return dynamic_cast<Consumable*>(gameObject) != nullptr;
 }

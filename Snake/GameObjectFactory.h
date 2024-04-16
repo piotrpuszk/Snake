@@ -8,26 +8,27 @@
 #include <type_traits>
 #include "GameObjectStore.h"
 #include <memory>
+#include "SpawnerOfConsumables.h"
 
 class GameObjectFactory
 {
 public:
 	GameObjectFactory(TextureStore textureStore, GameObjectStore& gameObjectStore);
-	Snake* createSnake();
-	Consumable* createFood01(sf::Vector2f position);
-
+	
 	template<typename T, typename... Types>
 	T* create(Types... args);
 private:
 	TextureStore textureStore;
 	GameObjectStore& gameObjectStore;
+
+	Snake* create(Snake*);
+	Consumable* create(Consumable*, sf::Vector2f position, size_t growSize = 1);
+	SpawnerOfConsumables* create(SpawnerOfConsumables*, GameSettings& gameSettings, sf::Time spawnInterval);
 };
 
 template<typename T, typename... Types>
 inline T* GameObjectFactory::create(Types... args)
 {
-	if constexpr (std::is_same_v<T, Snake>)
-	{
-		return createSnake();
-	}
+	T* selector{};
+	return create(selector, args...);
 }

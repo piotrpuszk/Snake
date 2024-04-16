@@ -3,7 +3,7 @@
 GameObjectFactory* GameObjectInstantiator::gameObjectFactory = nullptr;
 GameObjectStore* GameObjectInstantiator::gameObjectStore = nullptr;
 CollisionSystem* GameObjectInstantiator::collisionSystem = nullptr;
-std::vector<GameObject*> GameObjectInstantiator::gameObjectsToDelete = {};
+std::queue<GameObject*> GameObjectInstantiator::gameObjectsToDelete = {};
 
 void GameObjectInstantiator::setGameObjectFactory(GameObjectFactory* gameObjectFactory)
 {
@@ -22,14 +22,22 @@ void GameObjectInstantiator::setCollisionSystem(CollisionSystem* collisionSystem
 
 void GameObjectInstantiator::destroy(GameObject* gameObject)
 {
-	gameObjectsToDelete.push_back(gameObject);
+	gameObjectsToDelete.push(gameObject);
 }
 
 void GameObjectInstantiator::destroy()
 {
-	for (auto& e : gameObjectsToDelete)
+	while (!gameObjectsToDelete.empty())
 	{
-		collisionSystem->deleteCollider(e);
-		gameObjectStore->deleteGameObject(e);
+		if (std::is_same_v<Snake, decltype(gameObjectsToDelete.front())>)
+		{
+			collisionSystem->deleteSnakeCollider(gameObjectsToDelete.front());
+		}
+		else
+		{
+			collisionSystem->deleteOtherCollider(gameObjectsToDelete.front());
+		}
+		gameObjectStore->deleteGameObject(gameObjectsToDelete.front());
+		gameObjectsToDelete.pop();
 	}
 }

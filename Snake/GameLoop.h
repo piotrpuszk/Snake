@@ -21,7 +21,7 @@ private:
 	void fixedUpdate();
 	void handleUserInput();
 	void render() const;
-	void collisionCheck() const;
+	void checkCollisions() const;
 	void destroySelectedGameObjects();
 
 	sf::Time lag;

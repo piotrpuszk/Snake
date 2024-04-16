@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <queue>
 #include "GameObjectStore.h"
 #include "GameObjectFactory.h"
 #include "CollisionSystem.h"
@@ -20,11 +21,25 @@ private:
 	static GameObjectFactory* gameObjectFactory;
 	static GameObjectStore* gameObjectStore;
 	static CollisionSystem* collisionSystem;
-	static std::vector<GameObject*> gameObjectsToDelete;
+	static std::queue<GameObject*> gameObjectsToDelete;
 };
 
 template<typename T, typename... Types>
 inline T* GameObjectInstantiator::instantiate(Types... args)
 {
-	return gameObjectFactory->create<T>(args...);
+	const auto& createdGameObject = gameObjectFactory->create<T>(args...);
+
+	for (const auto& e : createdGameObject->getComponents<BoxCollider>())
+	{
+		if (std::is_same_v<T, Snake>)
+		{
+			collisionSystem->addSnakeCollider(ObjectCollider{ createdGameObject, e });
+		}
+		else
+		{
+			collisionSystem->addOtherCollider(ObjectCollider{ createdGameObject, e });
+		}
+	}
+
+	return createdGameObject;
 }

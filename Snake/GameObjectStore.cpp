@@ -1,4 +1,5 @@
 #include "GameObjectStore.h"
+#include <iostream>
 
 GameObjectStore::GameObjectStore()
 	:
@@ -31,6 +32,6 @@ std::vector<GameObject*>& GameObjectStore::getGameObjects()
 
 void GameObjectStore::deleteGameObject(GameObject* gameObject)
 {
-	std::erase_if(gameObjectRawPointers, [&](const auto e) { return &*e == &*gameObject; });
-	std::erase_if(gameObjects, [&](const auto& e) { return &*e == &*gameObject; });
+	std::erase_if(gameObjectRawPointers, [&](const auto e) { return e->getId() == gameObject->getId(); });
+	std::erase_if(gameObjects, [&](const auto& e) { return e->getId() == gameObject->getId(); });
 }

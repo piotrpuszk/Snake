@@ -1,5 +1,6 @@
 #include "Consumable.h"
 #include "GameObjectInstantiator.h"
+#include <iostream>
 
 Consumable::Consumable(size_t growSize)
 	:

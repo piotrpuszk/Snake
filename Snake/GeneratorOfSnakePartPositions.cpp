@@ -16,7 +16,6 @@ GeneratorOfSnakePartPositions::GeneratorOfSnakePartPositions(TurnPointStore* tur
 void GeneratorOfSnakePartPositions::increasePositionCount()
 {
 	++positionCount;
-	std::cout << positionCount << std::endl;
 }
 
 std::vector<sf::Vector2f> GeneratorOfSnakePartPositions::getPositions(sf::Vector2f startPosition, sf::Vector2f forward)
@@ -64,11 +63,6 @@ void GeneratorOfSnakePartPositions::addFromCurrentPositionToTurnPoint()
 void GeneratorOfSnakePartPositions::addAtTurnPoint()
 {
 	auto availableDistance{ elementSize };
-	const auto distanceToCurrentTurnPoint{ Maths::magnitude(currentPosition - turnPointIterator->getPosition()) };
-	if (distanceToCurrentTurnPoint - availableDistance == 0.f)
-	{
-		return;
-	}
 
 	for (auto turnPoint = turnPointIterator; turnPoint != std::end(turnPointStore->getTurnPoints()); ++turnPoint)
 	{

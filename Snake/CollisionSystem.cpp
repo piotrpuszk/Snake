@@ -1,28 +1,66 @@
 #include "CollisionSystem.h"
 #include <algorithm>
+#include <iostream>
 
-CollisionSystem::CollisionSystem(std::vector<ObjectCollider>& objectColliders)
+CollisionSystem::CollisionSystem()
 	:
-	objectColliders{ objectColliders }
+	otherColliders{},
+	snakeColliders{}
 {
 }
 
-void CollisionSystem::checkCollisions() const
+void CollisionSystem::checkCollisions()
 {
-	for (auto objectCollider1 = std::begin(objectColliders); objectCollider1 != std::end(objectColliders); ++objectCollider1)
+	checkCollisions(std::begin(snakeColliders), std::end(snakeColliders), std::begin(otherColliders), std::end(otherColliders));
+}
+
+void CollisionSystem::checkCollisions(auto begin1, auto end1, auto begin2, auto end2)
+{
+	for (; begin1 != end1; ++begin1)
 	{
-		for (auto objectCollider2 = objectCollider1 + 1; objectCollider2 != std::end(objectColliders); ++objectCollider2)
+		for (; begin2 != end2; ++begin2)
 		{
-			if (objectCollider1->getBoxCollider()->isColliding(*objectCollider2->getBoxCollider()))
-			{
-				objectCollider1->getGameObject()->onEnterCollision(objectCollider2->getGameObject());
-				objectCollider2->getGameObject()->onEnterCollision(objectCollider1->getGameObject());
-			}
+			checkCollision(begin1->get(), begin2->get());
 		}
 	}
 }
 
-void CollisionSystem::deleteCollider(GameObject* gameObject)
+void CollisionSystem::checkCollisions(auto begin, auto end)
 {
-	std::erase_if(objectColliders, [&](auto& e) { return &*e.getGameObject() == &*gameObject; });
+	for (; begin != end; ++begin)
+	{
+		for (auto begin2 = begin + 1; begin2 != end; ++begin2)
+		{
+			checkCollision(begin->get(), begin2->get());
+		}
+	}
+}
+
+void CollisionSystem::checkCollision(ObjectCollider* collider1, ObjectCollider* collider2)
+{
+	if (collider1->getBoxCollider()->isColliding(*collider2->getBoxCollider()))
+	{
+		collider1->getGameObject()->onEnterCollision(collider2->getGameObject());
+		collider2->getGameObject()->onEnterCollision(collider1->getGameObject());
+	}
+}
+
+void CollisionSystem::deleteSnakeCollider(GameObject* gameObject)
+{
+	std::erase_if(snakeColliders, [&](auto& e) { return &*e->getGameObject() == &*gameObject; });
+}
+
+void CollisionSystem::deleteOtherCollider(GameObject* gameObject)
+{
+	std::erase_if(otherColliders, [&](auto& e) { return &*e->getGameObject() == &*gameObject; });
+}
+
+void CollisionSystem::addSnakeCollider(ObjectCollider&& objectCollider)
+{
+	snakeColliders.emplace_back(std::make_unique<ObjectCollider>(objectCollider));
+}
+
+void CollisionSystem::addOtherCollider(ObjectCollider&& objectCollider)
+{
+	otherColliders.emplace_back(std::make_unique<ObjectCollider>(objectCollider));
 }

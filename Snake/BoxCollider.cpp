@@ -28,13 +28,9 @@ bool BoxCollider::isColliding(BoxCollider other) const
 
 	for (const auto& corner : corners)
 	{
-		if (corner.x > xRange.x && corner.x < xRange.y && corner.y > yRange.x && corner.y < yRange.y)
+		if (corner.x >= xRange.x && corner.x <= xRange.y && corner.y >= yRange.x && corner.y <= yRange.y)
 		{
 			return true;
-		}
-		if ((corner.x == xRange.x || corner.x == xRange.y) && (corner.y == yRange.x || corner.y == yRange.y))
-		{
-			return transform->getForward() != other.transform->getForward();
 		}
 	}
 

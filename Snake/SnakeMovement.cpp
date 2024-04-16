@@ -11,8 +11,6 @@ SnakeMovement::SnakeMovement(Transform* transform, float speed)
 void SnakeMovement::move()
 {
 	auto newPosition{ transform->getPosition() + speed * transform->getForward() };
-	newPosition.x = std::round(newPosition.x);
-	newPosition.y = std::round(newPosition.y);
 	transform->setPosition(newPosition);
 }
 

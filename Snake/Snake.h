@@ -34,6 +34,6 @@ private:
 	bool canTurn(sf::Vector2f direction) const noexcept;
 	void updateComponentsPositions(std::vector<sf::Vector2f> positions);
 	void removeUsedUpTurnPoints(std::vector<sf::Vector2f> positions);
-	bool isEatingItself() const;
+	bool isEatingItself(std::vector<sf::Vector2f> positions) const;
 	bool isEatingFood(GameObject* gameObject) const;
 };
