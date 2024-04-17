@@ -1,9 +1,9 @@
-#include "SpawnerOfConsumables.h"
+#include "ConsumablesSpawner.h"
 #include "Consumable.h"
 #include "GameObjectInstantiator.h"
 #include <iostream>
 
-SpawnerOfConsumables::SpawnerOfConsumables(const GameSettings& gameSettings, sf::Time spawnInterval)
+ConsumablesSpawner::ConsumablesSpawner(const GameSettings& gameSettings, sf::Time spawnInterval)
 	:
 	gameSettings{ gameSettings },
 	spawnInterval{ spawnInterval },
@@ -13,17 +13,17 @@ SpawnerOfConsumables::SpawnerOfConsumables(const GameSettings& gameSettings, sf:
 	std::srand(1);
 }
 
-bool SpawnerOfConsumables::canSpawn()
+bool ConsumablesSpawner::canSpawn()
 {
 	return timeElapsed >= spawnInterval;
 }
 
-void SpawnerOfConsumables::awake()
+void ConsumablesSpawner::awake()
 {
 	clock = {};
 }
 
-void SpawnerOfConsumables::update()
+void ConsumablesSpawner::update()
 {
 	timeElapsed += clock.restart();
 
@@ -38,16 +38,13 @@ void SpawnerOfConsumables::update()
 				static_cast<float>(std::rand() % gameSettings.getMapSize().y)
 			}
 		);
-
-	/*	std::cout << consumable->getComponent<Transform>()->getPosition().x << " "
-			<< consumable->getComponent<Transform>()->getPosition().y << std::endl;*/
 	}
 }
 
-void SpawnerOfConsumables::fixedUpdate()
+void ConsumablesSpawner::fixedUpdate()
 {
 }
 
-void SpawnerOfConsumables::onEnterCollision(GameObject* gameObject)
+void ConsumablesSpawner::onEnterCollision(GameObject* gameObject)
 {
 }

@@ -4,10 +4,10 @@
 #include "GameObject.h"
 #include "GameSettings.h"
 
-class SpawnerOfConsumables : public GameObject
+class ConsumablesSpawner : public GameObject
 {
 public:
-	SpawnerOfConsumables(const GameSettings& gameSettings, sf::Time spawnInterval);
+	ConsumablesSpawner(const GameSettings& gameSettings, sf::Time spawnInterval);
 	
 private:
 	sf::Time spawnInterval;

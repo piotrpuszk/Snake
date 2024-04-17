@@ -4,8 +4,9 @@
 #include <functional>
 #include <functional>
 #include "TurnPoint.h"
+#include "Component.h"
 
-class TurnPointStore
+class TurnPointStore : public Component
 {
 public:
 	TurnPointStore();

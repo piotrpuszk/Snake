@@ -8,7 +8,8 @@
 #include <type_traits>
 #include "GameObjectStore.h"
 #include <memory>
-#include "SpawnerOfConsumables.h"
+#include "ConsumablesSpawner.h"
+#include "BoxCollider.h"
 
 class GameObjectFactory
 {
@@ -16,19 +17,31 @@ public:
 	GameObjectFactory(TextureStore textureStore, GameObjectStore& gameObjectStore);
 	
 	template<typename T, typename... Types>
-	T* create(Types... args);
+	T* create(Types&&... args);
 private:
+	Snake* createSnake();
+	Consumable* createConsumable(sf::Vector2f position, size_t growSize = 1);
+	ConsumablesSpawner* createConsumablesSpawner(GameSettings& gameSettings, sf::Time spawnInterval);
+
 	TextureStore textureStore;
 	GameObjectStore& gameObjectStore;
-
-	Snake* create(Snake*);
-	Consumable* create(Consumable*, sf::Vector2f position, size_t growSize = 1);
-	SpawnerOfConsumables* create(SpawnerOfConsumables*, GameSettings& gameSettings, sf::Time spawnInterval);
 };
 
 template<typename T, typename... Types>
-inline T* GameObjectFactory::create(Types... args)
+inline T* GameObjectFactory::create(Types&&... args)
 {
-	T* selector{};
-	return create(selector, args...);
+	if constexpr (std::is_same_v<T, Snake>)
+	{
+		return createSnake();
+	}
+
+	if constexpr (std::is_same_v<T, Consumable>)
+	{
+		return createConsumable(std::forward<Types>(args)...);
+	}
+
+	if constexpr (std::is_same_v<T, ConsumablesSpawner>)
+	{
+		return createConsumablesSpawner(std::forward<Types>(args)...);
+	}
 }

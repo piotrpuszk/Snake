@@ -10,11 +10,12 @@
 #include "BoxCollider.h"
 #include "Consumable.h"
 #include "SnakeCollisionChecker.h"
+#include "TurnDirectionHandler.h"
 
 class Snake : public GameObject
 {
 public:
-	Snake(std::unique_ptr<TurnPointStore> turnPointStore, GeneratorOfSnakePartPositions generatorOfSnakePartPositions);
+	Snake();
 private:
 	void awake() override;
 	void update() override;
@@ -35,11 +36,9 @@ private:
 	std::vector<MeshRenderer*> meshRenderers;
 	std::vector<BoxCollider*> boxColliders;
 	SnakeCollisionChecker* snakeCollisionChecker;
-
-	std::unique_ptr<TurnPointStore> turnPointStore;
-	GeneratorOfSnakePartPositions generatorOfSnakePartPositions;
+	TurnPointStore* turnPointStore;
+	GeneratorOfSnakePartPositions* generatorOfSnakePartPositions;
 	
 	float elementSize;
 	float elementSizeSquared;
-	sf::Vector2f latestRequestedTurnDirection;
 };

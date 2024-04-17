@@ -7,22 +7,19 @@
 #include <algorithm>
 #include <iostream>
 
-Snake::Snake(std::unique_ptr<TurnPointStore> turnPointStore, GeneratorOfSnakePartPositions generatorOfSnakePartPositions)
+Snake::Snake()
 	:
-	turnPointStore{ std::move(turnPointStore) },
-	generatorOfSnakePartPositions{ generatorOfSnakePartPositions },
+	turnPointStore{},
+	generatorOfSnakePartPositions{},
 	snakeMovement{},
 	transform{},
 	meshRenderers{},
 	boxColliders{},
 	snakeCollisionChecker{},
 	elementSize{},
-	elementSizeSquared{},
-	latestRequestedTurnDirection{}
+	elementSizeSquared{}
 {
-	this->turnPointStore.get()->setRemoveMeshRenderer([this](auto e) {
-		removeComponent(e);
-		});
+	
 }
 
 void Snake::awake()
@@ -32,35 +29,28 @@ void Snake::awake()
 	snakeMovement = getComponent<SnakeMovement>();
 	transform = getComponent<Transform>();
 	snakeCollisionChecker = getComponent<SnakeCollisionChecker>();
+	turnPointStore = getComponent<TurnPointStore>();
+	generatorOfSnakePartPositions = getComponent<GeneratorOfSnakePartPositions>();
+
 	elementSize = boxColliders[0]->getSize().x;
 	elementSizeSquared = elementSize * elementSize;
+	turnPointStore->setRemoveMeshRenderer(
+		[this](auto e) 
+		{
+			removeComponent(e);
+		}
+	);
 }
 
 void Snake::update()
 {
-	if (UserInputHandler::upPressed())
-	{
-		latestRequestedTurnDirection = WorldDirection::up;
-	}
-	if (UserInputHandler::downPressed())
-	{
-		latestRequestedTurnDirection = WorldDirection::down;
-	}
-	if (UserInputHandler::rightPressed())
-	{
-		latestRequestedTurnDirection = WorldDirection::right;
-	}
-	if (UserInputHandler::leftPressed())
-	{
-		latestRequestedTurnDirection = WorldDirection::left;
-	}
 }
 
 void Snake::fixedUpdate()
 {
 	turn();
 	move();
-	const auto& positions = generatorOfSnakePartPositions.getPositions(transform->getPosition(), transform->getForward());
+	const auto& positions = generatorOfSnakePartPositions->getPositions(transform->getPosition(), transform->getForward());
 	updateComponentsPositions(positions);
 	removeUsedUpTurnPoints(positions);
 	if (isEatingItself(positions))
@@ -80,18 +70,18 @@ void Snake::onEnterCollision(GameObject* gameObject)
 
 void Snake::turn()
 {
-	if (!snakeMovement->canTurn(latestRequestedTurnDirection, turnPointStore->getTurnPoints()))
+	if (!snakeMovement->canTurn(UserInputHandler::getLatestDirection(), turnPointStore->getTurnPoints()))
 	{
 		return;
 	}
 
 	auto meshRenderer{ addComponent<MeshRenderer>(meshRenderers[0]->getSprite()) };
 	meshRenderer->setPosition(transform->getPosition());
-	turnPointStore->add(TurnPoint{ transform->getPosition(), transform->getForward(), latestRequestedTurnDirection, meshRenderer });
+	turnPointStore->add(TurnPoint{ transform->getPosition(), transform->getForward(), UserInputHandler::getLatestDirection(), meshRenderer});
 	
-	snakeMovement->turn(latestRequestedTurnDirection);
+	snakeMovement->turn(UserInputHandler::getLatestDirection());
 	
-	latestRequestedTurnDirection = {};
+	UserInputHandler::resetLatestDirection();
 }
 
 void Snake::move()
@@ -109,14 +99,12 @@ void Snake::grow(int amount)
 	for (size_t i = 0; i < amount; i++)
 	{
 		addComponent<MeshRenderer>(meshRenderers[0]->getSprite());
-		generatorOfSnakePartPositions.increasePositionCount();
+		generatorOfSnakePartPositions->increasePositionCount();
 	}
-	boxColliders = getComponents<BoxCollider>();
 	meshRenderers = getComponents<MeshRenderer>();
-	auto& turnPoints = turnPointStore->getTurnPoints();
 	std::erase_if(meshRenderers, [&](auto& meshRenderer)
 		{
-			for (auto& turnPoint : turnPoints)
+			for (auto& turnPoint : turnPointStore->getTurnPoints())
 			{
 				if (&*meshRenderer == &*turnPoint.getMeshRenderer())
 				{

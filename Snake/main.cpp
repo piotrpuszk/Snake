@@ -20,7 +20,7 @@ int main()
 	GameObjectFactory gameObjectFactory{ textureStore, gameObjectStore };
 	auto snake = gameObjectFactory.create<Snake>();
 	std::vector<Consumable*> consumables{};
-	consumables.push_back(gameObjectFactory.create<Consumable>(sf::Vector2f{ 100.f, 100.f }));
+	consumables.push_back(gameObjectFactory.create<Consumable>(sf::Vector2f{ 100.f, 100.f }, 1));
 	CollisionSystem collisionSystem{};
 	for (const auto& e : snake->getComponents<BoxCollider>())
 	{
@@ -41,7 +41,7 @@ int main()
 	GameObjectInstantiator::setGameObjectStore(&gameObjectStore);
 	GameObjectInstantiator::setCollisionSystem(&collisionSystem);
 
-	gameObjectFactory.create<SpawnerOfConsumables>(gameSettings, sf::seconds(1.f));
+	gameObjectFactory.create<ConsumablesSpawner>(gameSettings, sf::seconds(1.f));
 
 	while (window.isOpen())
 	{

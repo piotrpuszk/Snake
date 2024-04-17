@@ -90,7 +90,7 @@
     <ClCompile Include="Consumable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SpawnerOfConsumables.cpp">
+    <ClCompile Include="ConsumablesSpawner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SnakeCollisionChecker.cpp">
@@ -176,7 +176,7 @@
     <ClInclude Include="Consumable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SpawnerOfConsumables.h">
+    <ClInclude Include="ConsumablesSpawner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SnakeCollisionChecker.h">

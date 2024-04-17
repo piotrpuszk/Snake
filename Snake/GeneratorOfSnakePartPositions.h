@@ -1,7 +1,9 @@
 #pragma once
 #include <memory>
 #include "TurnPointStore.h"
-class GeneratorOfSnakePartPositions
+#include "Component.h"
+
+class GeneratorOfSnakePartPositions : public Component
 {
 public:
 	GeneratorOfSnakePartPositions(TurnPointStore* turnPointStore, size_t positionCount, float elementSize);

@@ -1,5 +1,4 @@
 #include "GameObjectFactory.h"
-#include "BoxCollider.h"
 #include <iostream>
 
 GameObjectFactory::GameObjectFactory(TextureStore textureStore, GameObjectStore& gameObjectStore)
@@ -9,20 +8,19 @@ GameObjectFactory::GameObjectFactory(TextureStore textureStore, GameObjectStore&
 {
 }
 
-Snake* GameObjectFactory::create(Snake*)
+Snake* GameObjectFactory::createSnake()
 {
 	float snakePartSize{ 20.f };
 	size_t snakePartCount{ 10 };
 
-	auto turnPointStore{ std::make_unique<TurnPointStore>() };
-	GeneratorOfSnakePartPositions generatorOfSnakePartPositions{ turnPointStore.get(), snakePartCount, snakePartSize };
+	auto snake = std::make_unique<Snake>();
 
-	auto snake = std::make_unique<Snake>(std::move(turnPointStore), generatorOfSnakePartPositions);
+	const auto& turnPointStore{ snake->addComponent<TurnPointStore>() };
+	snake->addComponent<GeneratorOfSnakePartPositions>(turnPointStore, snakePartCount, snakePartSize);
 	auto transform{ snake->addComponent<Transform>() };
 	transform->setForward({ 1.f, 0.f });
 	transform->setPosition({ 300.f, 150.f });
 	snake->addComponent<SnakeCollisionChecker>(transform, snakePartSize);
-
 	snake->addComponent<SnakeMovement>(transform, 5.f, snakePartSize);
 
 	sf::Sprite sprite{};
@@ -38,7 +36,7 @@ Snake* GameObjectFactory::create(Snake*)
 	return dynamic_cast<Snake*>(gameObjectStore.addGameObject(std::move(snake)));
 }
 
-Consumable* GameObjectFactory::create(Consumable*, sf::Vector2f position, size_t growSize)
+Consumable* GameObjectFactory::createConsumable(sf::Vector2f position, size_t growSize)
 {
 	float size{ 20.f };
 	auto food01 = std::make_unique<Consumable>(growSize);
@@ -57,9 +55,9 @@ Consumable* GameObjectFactory::create(Consumable*, sf::Vector2f position, size_t
 	return dynamic_cast<Consumable*>(gameObjectStore.addGameObject(std::move(food01)));
 }
 
-SpawnerOfConsumables* GameObjectFactory::create(SpawnerOfConsumables*, GameSettings& gameSettings, sf::Time spawnInterval)
+ConsumablesSpawner* GameObjectFactory::createConsumablesSpawner(GameSettings& gameSettings, sf::Time spawnInterval)
 {
-	auto spawnerOfConsumables{std::make_unique<SpawnerOfConsumables>(gameSettings, spawnInterval)};
+	auto consumablesSpawner{ std::make_unique<ConsumablesSpawner>(gameSettings, spawnInterval) };
 
-	return dynamic_cast<SpawnerOfConsumables*>(gameObjectStore.addGameObject(std::move(spawnerOfConsumables)));
+	return dynamic_cast<ConsumablesSpawner*>(gameObjectStore.addGameObject(std::move(consumablesSpawner)));
 }
