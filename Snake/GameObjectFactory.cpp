@@ -18,12 +18,12 @@ Snake* GameObjectFactory::create(Snake*)
 	GeneratorOfSnakePartPositions generatorOfSnakePartPositions{ turnPointStore.get(), snakePartCount, snakePartSize };
 
 	auto snake = std::make_unique<Snake>(std::move(turnPointStore), generatorOfSnakePartPositions);
-
 	auto transform{ snake->addComponent<Transform>() };
 	transform->setForward({ 1.f, 0.f });
 	transform->setPosition({ 300.f, 150.f });
+	snake->addComponent<SnakeCollisionChecker>(transform, snakePartSize);
 
-	snake->addComponent<SnakeMovement>(transform, 1.f);
+	snake->addComponent<SnakeMovement>(transform, 5.f, snakePartSize);
 
 	sf::Sprite sprite{};
 	sprite.setOrigin({ snakePartSize / 2.f, snakePartSize / 2.f });

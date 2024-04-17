@@ -13,7 +13,7 @@
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
-	GameSettings gameSettings{ sf::seconds(0.01f), {800, 600} };
+	GameSettings gameSettings{ sf::seconds(0.02f), {800, 600} };
 
 	TextureStore textureStore{};
 	GameObjectStore gameObjectStore{};

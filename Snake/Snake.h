@@ -9,6 +9,7 @@
 #include "GeneratorOfSnakePartPositions.h"
 #include "BoxCollider.h"
 #include "Consumable.h"
+#include "SnakeCollisionChecker.h"
 
 class Snake : public GameObject
 {
@@ -20,20 +21,25 @@ private:
 	void fixedUpdate() override;
 	void onEnterCollision(GameObject* gameObject) override;
 
-	std::unique_ptr<TurnPointStore> turnPointStore;
-	GeneratorOfSnakePartPositions generatorOfSnakePartPositions;
+	void turn();
+	void move();
+	void onEatFruit(Consumable* consumable);
+	void grow(int amount);
+	void updateComponentsPositions(const std::vector<sf::Vector2f>& positions);
+	void removeUsedUpTurnPoints(const std::vector<sf::Vector2f>& positions);
+	bool isEatingItself(const std::vector<sf::Vector2f>& positions) const;
+	bool isEatingFood(GameObject* gameObject) const;
+
 	SnakeMovement* snakeMovement;
 	Transform* transform;
 	std::vector<MeshRenderer*> meshRenderers;
 	std::vector<BoxCollider*> boxColliders;
+	SnakeCollisionChecker* snakeCollisionChecker;
 
-	void turn(sf::Vector2f direction);
-	void move();
-	void onEatFruit(Consumable* consumable);
-	void grow(int amount);
-	bool canTurn(sf::Vector2f direction) const noexcept;
-	void updateComponentsPositions(std::vector<sf::Vector2f> positions);
-	void removeUsedUpTurnPoints(std::vector<sf::Vector2f> positions);
-	bool isEatingItself(std::vector<sf::Vector2f> positions) const;
-	bool isEatingFood(GameObject* gameObject) const;
+	std::unique_ptr<TurnPointStore> turnPointStore;
+	GeneratorOfSnakePartPositions generatorOfSnakePartPositions;
+	
+	float elementSize;
+	float elementSizeSquared;
+	sf::Vector2f latestRequestedTurnDirection;
 };

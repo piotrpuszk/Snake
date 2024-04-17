@@ -14,7 +14,11 @@ Snake::Snake(std::unique_ptr<TurnPointStore> turnPointStore, GeneratorOfSnakePar
 	snakeMovement{},
 	transform{},
 	meshRenderers{},
-	boxColliders{}
+	boxColliders{},
+	snakeCollisionChecker{},
+	elementSize{},
+	elementSizeSquared{},
+	latestRequestedTurnDirection{}
 {
 	this->turnPointStore.get()->setRemoveMeshRenderer([this](auto e) {
 		removeComponent(e);
@@ -27,30 +31,34 @@ void Snake::awake()
 	boxColliders = getComponents<BoxCollider>();
 	snakeMovement = getComponent<SnakeMovement>();
 	transform = getComponent<Transform>();
+	snakeCollisionChecker = getComponent<SnakeCollisionChecker>();
+	elementSize = boxColliders[0]->getSize().x;
+	elementSizeSquared = elementSize * elementSize;
 }
 
 void Snake::update()
 {
 	if (UserInputHandler::upPressed())
 	{
-		turn(WorldDirection::up);
+		latestRequestedTurnDirection = WorldDirection::up;
 	}
 	if (UserInputHandler::downPressed())
 	{
-		turn(WorldDirection::down);
+		latestRequestedTurnDirection = WorldDirection::down;
 	}
 	if (UserInputHandler::rightPressed())
 	{
-		turn(WorldDirection::right);
+		latestRequestedTurnDirection = WorldDirection::right;
 	}
 	if (UserInputHandler::leftPressed())
 	{
-		turn(WorldDirection::left);
+		latestRequestedTurnDirection = WorldDirection::left;
 	}
 }
 
 void Snake::fixedUpdate()
 {
+	turn();
 	move();
 	const auto& positions = generatorOfSnakePartPositions.getPositions(transform->getPosition(), transform->getForward());
 	updateComponentsPositions(positions);
@@ -64,24 +72,26 @@ void Snake::fixedUpdate()
 
 void Snake::onEnterCollision(GameObject* gameObject)
 {
-
-
 	if (isEatingFood(gameObject))
 	{
 		onEatFruit(dynamic_cast<Consumable*>(gameObject));
 	}
 }
 
-void Snake::turn(sf::Vector2f direction)
+void Snake::turn()
 {
-	if (!canTurn(direction))
+	if (!snakeMovement->canTurn(latestRequestedTurnDirection, turnPointStore->getTurnPoints()))
 	{
 		return;
 	}
+
 	auto meshRenderer{ addComponent<MeshRenderer>(meshRenderers[0]->getSprite()) };
 	meshRenderer->setPosition(transform->getPosition());
-	turnPointStore->add(TurnPoint{ transform->getPosition(), transform->getForward(), direction, meshRenderer });
-	snakeMovement->turn(direction);
+	turnPointStore->add(TurnPoint{ transform->getPosition(), transform->getForward(), latestRequestedTurnDirection, meshRenderer });
+	
+	snakeMovement->turn(latestRequestedTurnDirection);
+	
+	latestRequestedTurnDirection = {};
 }
 
 void Snake::move()
@@ -117,18 +127,9 @@ void Snake::grow(int amount)
 		});
 }
 
-bool Snake::canTurn(sf::Vector2f direction) const noexcept
+void Snake::updateComponentsPositions(const std::vector<sf::Vector2f>& positions)
 {
-	auto currentDirection{ transform->getForward() };
-	return !WorldDirection::areOppositeDirections(currentDirection, direction);
-}
-
-void Snake::updateComponentsPositions(std::vector<sf::Vector2f> positions)
-{
-	if (!positions.empty())
-	{
-		boxColliders[0]->setPosition(positions[0]);
-	}
+	boxColliders[0]->setPosition(positions[0]);
 
 	for (size_t i{}; i < positions.size(); i++)
 	{
@@ -136,7 +137,7 @@ void Snake::updateComponentsPositions(std::vector<sf::Vector2f> positions)
 	}
 }
 
-void Snake::removeUsedUpTurnPoints(std::vector<sf::Vector2f> positions)
+void Snake::removeUsedUpTurnPoints(const std::vector<sf::Vector2f>& positions)
 {
 	if (turnPointStore->getTurnPoints().empty())
 	{
@@ -153,65 +154,9 @@ void Snake::removeUsedUpTurnPoints(std::vector<sf::Vector2f> positions)
 	}
 }
 
-bool Snake::isEatingItself(std::vector<sf::Vector2f> positions) const
+bool Snake::isEatingItself(const std::vector<sf::Vector2f>& positions) const
 {
-	const auto& turnPoints{ turnPointStore->getTurnPoints() };
-
-	if (turnPoints.size() < 2)
-	{
-		return false;
-	}
-
-	const auto& head{ transform->getPosition() };
-	const auto& halfSize{ boxColliders[0]->getSize().x / 2.f };
-
-	std::vector<sf::Vector2f> headCorners
-	{ 
-		{ head.x - halfSize, head.y - halfSize }, 
-		{ head.x + halfSize, head.y - halfSize },
-		{ head.x - halfSize, head.y + halfSize },
-		{ head.x + halfSize, head.y + halfSize } 
-	};
-
-	float x1{};
-	float y1{};
-	float x2{};
-	float y2{};
-
-	for (size_t i{ 1 }; i < turnPoints.size(); i++)
-	{
-		auto position1{ turnPoints[i].getPosition() };
-		auto position2{ i + 1 == turnPoints.size() ? positions[positions.size() - 1] : turnPoints[i + 1].getPosition() };
-
-		if (position1.y == position2.y)
-		{
-			x1 = position1.x < position2.x ? position1.x : position2.x;
-			y1 = position1.y;
-			x2 = position1.x > position2.x ? position1.x : position2.x;
-			y2 = position1.y;
-		}
-		else if (position1.x == position2.x)
-		{
-			y1 = position1.y < position2.y ? position1.y : position2.y;
-			x1 = position1.x;
-			y2 = position1.y > position2.y ? position1.y : position2.y;
-			x2 = position1.x;
-		}
-
-		for (const auto& e : headCorners)
-		{
-			if (e.x >= x1 - halfSize
-				&& e.x <= x2 + halfSize
-				&& e.y >= y1 - halfSize
-				&& e.y <= y2 + halfSize)
-			{
-				return true;
-			}
-		}
-
-	}
-
-	return false;
+	return snakeCollisionChecker->IsCollidingWithItself(turnPointStore->getTurnPoints(), positions);
 }
 
 bool Snake::isEatingFood(GameObject* gameObject) const
