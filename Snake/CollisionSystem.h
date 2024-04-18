@@ -10,8 +10,7 @@ public:
 	CollisionSystem();
 
 	void checkCollisions();
-	void deleteSnakeCollider(GameObject* gameObject);
-	void deleteOtherCollider(GameObject* gameObject);
+	void deleteCollider(GameObject* gameObject);
 	void addSnakeCollider(ObjectCollider&& objectCollider);
 	void addOtherCollider(ObjectCollider&& objectCollider);
 private:

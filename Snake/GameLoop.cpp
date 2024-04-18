@@ -12,7 +12,7 @@ GameLoop::GameLoop(GameObjectStore& gameObjectStore,
 	lag{},
 	clock{},
 	fixedTimeStep{ gameSettings.getFixedTimeStep() },
-	gameObjectStore{gameObjectStore},
+	gameObjectStore{ gameObjectStore },
 	renderer{ renderer },
 	collisionSystem{ collisionSystem },
 	renderWindow{ renderWindow }
@@ -45,8 +45,8 @@ void GameLoop::execute()
 
 void GameLoop::update()
 {
-	const auto& size = gameObjectStore.getGameObjects().size();
-	const auto& gameObjects = gameObjectStore.getGameObjects();
+	const auto& size{ gameObjectStore.getGameObjects().size() };
+	const auto& gameObjects{ gameObjectStore.getGameObjects() };
 	for (size_t i{}; i < size; ++i)
 	{
 		gameObjects[i]->update();
@@ -55,8 +55,8 @@ void GameLoop::update()
 
 void GameLoop::fixedUpdate()
 {
-	const auto& size = gameObjectStore.getGameObjects().size();
-	const auto& gameObjects = gameObjectStore.getGameObjects();
+	const auto& size{ gameObjectStore.getGameObjects().size() };
+	const auto& gameObjects{ gameObjectStore.getGameObjects() };
 	for (size_t i{}; i < size; ++i)
 	{
 		gameObjects[i]->fixedUpdate();

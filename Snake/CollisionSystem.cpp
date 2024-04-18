@@ -45,13 +45,9 @@ void CollisionSystem::checkCollision(ObjectCollider* collider1, ObjectCollider* 
 	}
 }
 
-void CollisionSystem::deleteSnakeCollider(GameObject* gameObject)
+void CollisionSystem::deleteCollider(GameObject* gameObject)
 {
 	std::erase_if(snakeColliders, [&](auto& e) { return &*e->getGameObject() == &*gameObject; });
-}
-
-void CollisionSystem::deleteOtherCollider(GameObject* gameObject)
-{
 	std::erase_if(otherColliders, [&](auto& e) { return &*e->getGameObject() == &*gameObject; });
 }
 

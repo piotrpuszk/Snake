@@ -29,14 +29,7 @@ void GameObjectInstantiator::destroy()
 {
 	while (!gameObjectsToDelete.empty())
 	{
-		if (std::is_same_v<Snake, decltype(gameObjectsToDelete.front())>)
-		{
-			collisionSystem->deleteSnakeCollider(gameObjectsToDelete.front());
-		}
-		else
-		{
-			collisionSystem->deleteOtherCollider(gameObjectsToDelete.front());
-		}
+		collisionSystem->deleteCollider(gameObjectsToDelete.front());
 		gameObjectStore->deleteGameObject(gameObjectsToDelete.front());
 		gameObjectsToDelete.pop();
 	}
