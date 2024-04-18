@@ -18,9 +18,22 @@ int main()
 	TextureStore textureStore{};
 	GameObjectStore gameObjectStore{};
 	GameObjectFactory gameObjectFactory{ textureStore, gameObjectStore };
-	auto snake = gameObjectFactory.create<Snake>();
+
+	auto snake{ gameObjectFactory.create<Snake>() };
+
 	std::vector<Consumable*> consumables{};
 	consumables.push_back(gameObjectFactory.create<Consumable>(sf::Vector2f{ 100.f, 100.f }, 1));
+
+	std::vector<Wall*> walls
+	{ 
+		gameObjectFactory.create<Wall>(sf::Vector2f{0, 0}, sf::Vector2f{ 50, 600 }), 
+		gameObjectFactory.create<Wall>(sf::Vector2f{0, 0}, sf::Vector2f{ 800, 50 }), 
+		gameObjectFactory.create<Wall>(sf::Vector2f{0, 550}, sf::Vector2f{ 800, 50 }), 
+		gameObjectFactory.create<Wall>(sf::Vector2f{750, 0}, sf::Vector2f{ 50, 600 }), 
+	};
+
+	auto backgroundTexture{ gameObjectFactory.create<BackgroundTexture>(sf::Vector2f{}, sf::Vector2f{800, 600}) };
+
 	CollisionSystem collisionSystem{};
 	for (const auto& e : snake->getComponents<BoxCollider>())
 	{
@@ -33,6 +46,13 @@ int main()
 			collisionSystem.addOtherCollider(ObjectCollider{ consumable, e });
 		}
 	}
+	for (auto& wall : walls)
+	{
+		for (const auto& e : wall->getComponents<BoxCollider>())
+		{
+			collisionSystem.addOtherCollider(ObjectCollider{ wall, e });
+		}
+	}
 	Renderer renderer{ gameObjectStore };
 	GameLoop gameLoop{ gameObjectStore, gameSettings, renderer, collisionSystem, window };
 	KeyHandler::initialize();
@@ -42,6 +62,7 @@ int main()
 	GameObjectInstantiator::setCollisionSystem(&collisionSystem);
 
 	gameObjectFactory.create<ConsumablesSpawner>(gameSettings, sf::seconds(1.f));
+
 
 	while (window.isOpen())
 	{

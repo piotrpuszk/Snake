@@ -12,12 +12,9 @@ void Renderer::render(sf::RenderWindow& window) const
 {
 	window.clear(sf::Color::Black);
 
-	for (const auto& gameObject : gameObjectStore.getGameObjects())
+	for (const auto& e: gameObjectStore.getMeshRenderers())
 	{
-		for (const auto& meshRenderer : gameObject->getMeshRenderers())
-		{
-			window.draw(meshRenderer->getSprite());
-		}
+		window.draw(e->getSprite());
 	}
 
 	window.display();

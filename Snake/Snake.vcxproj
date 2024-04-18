@@ -135,6 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BackgroundTexture.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="CollisionSystem.cpp" />
     <ClCompile Include="Consumable.cpp" />
@@ -161,9 +162,11 @@
     <ClCompile Include="TurnPoint.cpp" />
     <ClCompile Include="TurnPointStore.cpp" />
     <ClCompile Include="UserInputHandler.cpp" />
+    <ClCompile Include="Wall.cpp" />
     <ClCompile Include="WorldDirection.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BackgroundTexture.h" />
     <ClInclude Include="CollisionSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Consumable.h" />
@@ -191,10 +194,13 @@
     <ClInclude Include="TurnPoint.h" />
     <ClInclude Include="TurnPointStore.h" />
     <ClInclude Include="UserInputHandler.h" />
+    <ClInclude Include="Wall.h" />
     <ClInclude Include="WorldDirection.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="food01.png" />
+    <Image Include="polyHavenBrick03.jpg" />
+    <Image Include="polyHavenBrownMudLeaves.jpg" />
     <Image Include="testTexture.jpg" />
     <Image Include="testTexture2.jpg" />
   </ItemGroup>

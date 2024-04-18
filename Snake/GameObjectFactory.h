@@ -10,6 +10,8 @@
 #include <memory>
 #include "ConsumablesSpawner.h"
 #include "BoxCollider.h"
+#include "Wall.h"
+#include "BackgroundTexture.h"
 
 class GameObjectFactory
 {
@@ -22,6 +24,8 @@ private:
 	Snake* createSnake();
 	Consumable* createConsumable(sf::Vector2f position, size_t growSize = 1);
 	ConsumablesSpawner* createConsumablesSpawner(GameSettings& gameSettings, sf::Time spawnInterval);
+	Wall* createWall(sf::Vector2f position, sf::Vector2f size);
+	BackgroundTexture* createBackgroundTexture(sf::Vector2f position, sf::Vector2f size);
 
 	TextureStore textureStore;
 	GameObjectStore& gameObjectStore;
@@ -43,5 +47,15 @@ inline T* GameObjectFactory::create(Types&&... args)
 	if constexpr (std::is_same_v<T, ConsumablesSpawner>)
 	{
 		return createConsumablesSpawner(std::forward<Types>(args)...);
+	}
+
+	if constexpr (std::is_same_v<T, Wall>)
+	{
+		return createWall(std::forward<Types>(args)...);
+	}
+
+	if constexpr (std::is_same_v<T, BackgroundTexture>)
+	{
+		return createBackgroundTexture(std::forward<Types>(args)...);
 	}
 }

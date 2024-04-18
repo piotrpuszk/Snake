@@ -1,8 +1,9 @@
 #include "MeshRenderer.h"
 
-MeshRenderer::MeshRenderer(sf::Sprite sprite)
+MeshRenderer::MeshRenderer(sf::Sprite sprite, int renderPriority)
 	:
-	sprite{ sprite }
+	sprite{ sprite },
+	renderPriority{ renderPriority }
 {
 }
 
@@ -19,4 +20,14 @@ void MeshRenderer::rotate(float angle) noexcept
 void MeshRenderer::setPosition(sf::Vector2f position)
 {
 	sprite.setPosition(position);
+}
+
+int MeshRenderer::getRenderPriority() const noexcept
+{
+	return renderPriority;
+}
+
+bool MeshRenderer::operator<(const MeshRenderer& rightSide)
+{
+	return renderPriority < rightSide.renderPriority;
 }

@@ -14,7 +14,12 @@ int GameObject::getId() const noexcept
 	return id;
 }
 
-std::vector<MeshRenderer*>& GameObject::getMeshRenderers() noexcept
+void GameObject::setOnMeshRendererAdded(std::function<void(MeshRenderer*)> onMeshRendererAdded)
 {
-	return meshRenderers;
+	this->onMeshRendererAdded = onMeshRendererAdded;
+}
+
+void GameObject::setOnMeshRendererRemoved(std::function<void(MeshRenderer*)> onMeshRendererRemoved)
+{
+	this->onMeshRendererRemoved = onMeshRendererRemoved;
 }

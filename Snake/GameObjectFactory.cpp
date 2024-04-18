@@ -25,7 +25,7 @@ Snake* GameObjectFactory::createSnake()
 
 	sf::Sprite sprite{};
 	sprite.setOrigin({ snakePartSize / 2.f, snakePartSize / 2.f });
-	sprite.setTexture(textureStore.getTestTexture());
+	sprite.setTexture(textureStore.getTest());
 	sprite.setTextureRect(sf::IntRect{ 0, 0, 20, 20 });
 	for (size_t i = 0; i < snakePartCount; i++)
 	{
@@ -48,7 +48,7 @@ Consumable* GameObjectFactory::createConsumable(sf::Vector2f position, size_t gr
 
 	sf::Sprite sprite{};
 	sprite.setOrigin({ size / 2.f, size / 2.f });
-	sprite.setTexture(textureStore.getFood01Texture());
+	sprite.setTexture(textureStore.getFood01());
 	sprite.setPosition(position);
 	food01->addComponent<MeshRenderer>(sprite);
 
@@ -60,4 +60,37 @@ ConsumablesSpawner* GameObjectFactory::createConsumablesSpawner(GameSettings& ga
 	auto consumablesSpawner{ std::make_unique<ConsumablesSpawner>(gameSettings, spawnInterval) };
 
 	return dynamic_cast<ConsumablesSpawner*>(gameObjectStore.addGameObject(std::move(consumablesSpawner)));
+}
+
+Wall* GameObjectFactory::createWall(sf::Vector2f position, sf::Vector2f size)
+{
+	auto wall{ std::make_unique<Wall>() };
+
+	auto transform{ wall->addComponent<Transform>() };
+	transform->setPosition(position);
+	wall->addComponent<BoxCollider>(transform, position, size);
+
+	sf::Sprite sprite{};
+	const auto& texture{ textureStore.getBrick01() };
+	sprite.setTexture(texture);
+	sf::Vector2f scale{ size.x / texture.getSize().x, size.y / texture.getSize().y };
+	sprite.setScale(scale);
+	sprite.setPosition(position);
+	wall->addComponent<MeshRenderer>(sprite);
+
+	return dynamic_cast<Wall*>(gameObjectStore.addGameObject(std::move(wall)));
+}
+
+BackgroundTexture* GameObjectFactory::createBackgroundTexture(sf::Vector2f position, sf::Vector2f size)
+{
+	auto backgroundTexture{ std::make_unique<BackgroundTexture>() };
+	sf::Sprite sprite{};
+	const auto& texture{ textureStore.getBackground() };
+	sprite.setTexture(texture);
+	sf::Vector2f scale{ size.x / texture.getSize().x, size.y / texture.getSize().y };
+	sprite.setScale(scale);
+	sprite.setPosition(position);
+	backgroundTexture->addComponent<MeshRenderer>(sprite, -1);
+
+	return dynamic_cast<BackgroundTexture*>(gameObjectStore.addGameObject(std::move(backgroundTexture)));
 }
