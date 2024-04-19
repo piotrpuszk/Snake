@@ -38,7 +38,8 @@ void CollisionSystem::checkCollisions(auto begin, auto end)
 
 void CollisionSystem::checkCollision(ObjectCollider* collider1, ObjectCollider* collider2)
 {
-	if (collider1->getBoxCollider()->isColliding(*collider2->getBoxCollider()))
+	if (collider1->getBoxCollider()->isColliding(*collider2->getBoxCollider())
+		|| collider2->getBoxCollider()->isColliding(*collider1->getBoxCollider()))
 	{
 		collider1->getGameObject()->onEnterCollision(collider2->getGameObject());
 		collider2->getGameObject()->onEnterCollision(collider1->getGameObject());

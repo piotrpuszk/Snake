@@ -31,7 +31,7 @@ Snake* GameObjectFactory::createSnake()
 	{
 		snake->addComponent<MeshRenderer>(sprite);
 	}
-	snake->addComponent<BoxCollider>(transform, sf::Vector2f{}, sf::Vector2f{ snakePartSize, snakePartSize });
+	snake->addComponent<BoxCollider>(transform, transform->getPosition(), sf::Vector2f{snakePartSize, snakePartSize});
 
 	return dynamic_cast<Snake*>(gameObjectStore.addGameObject(std::move(snake)));
 }
@@ -55,27 +55,26 @@ Consumable* GameObjectFactory::createConsumable(sf::Vector2f position, size_t gr
 	return dynamic_cast<Consumable*>(gameObjectStore.addGameObject(std::move(food01)));
 }
 
-ConsumablesSpawner* GameObjectFactory::createConsumablesSpawner(GameSettings& gameSettings, sf::Time spawnInterval)
+ConsumablesSpawner* GameObjectFactory::createConsumablesSpawner(const sf::Vector2f& position, const sf::Vector2f& size, sf::Time spawnInterval)
 {
-	auto consumablesSpawner{ std::make_unique<ConsumablesSpawner>(gameSettings, spawnInterval) };
+	auto consumablesSpawner{ std::make_unique<ConsumablesSpawner>(position, size, spawnInterval)};
 
 	return dynamic_cast<ConsumablesSpawner*>(gameObjectStore.addGameObject(std::move(consumablesSpawner)));
 }
 
-Wall* GameObjectFactory::createWall(sf::Vector2f position, sf::Vector2f size)
+Wall* GameObjectFactory::createWall(sf::Vector2f meshRendererPosition, sf::Vector2f meshRendererSize, sf::Vector2f boxColliderPosition, sf::Vector2f boxColliderSize)
 {
 	auto wall{ std::make_unique<Wall>() };
 
 	auto transform{ wall->addComponent<Transform>() };
-	transform->setPosition(position);
-	wall->addComponent<BoxCollider>(transform, position, size);
+	wall->addComponent<BoxCollider>(transform, boxColliderPosition, boxColliderSize);
 
 	sf::Sprite sprite{};
 	const auto& texture{ textureStore.getBrick01() };
 	sprite.setTexture(texture);
-	sf::Vector2f scale{ size.x / texture.getSize().x, size.y / texture.getSize().y };
+	sf::Vector2f scale{ meshRendererSize.x / texture.getSize().x, meshRendererSize.y / texture.getSize().y };
 	sprite.setScale(scale);
-	sprite.setPosition(position);
+	sprite.setPosition(meshRendererPosition);
 	wall->addComponent<MeshRenderer>(sprite);
 
 	return dynamic_cast<Wall*>(gameObjectStore.addGameObject(std::move(wall)));

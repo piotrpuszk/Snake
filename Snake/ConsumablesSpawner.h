@@ -7,13 +7,14 @@
 class ConsumablesSpawner : public GameObject
 {
 public:
-	ConsumablesSpawner(const GameSettings& gameSettings, sf::Time spawnInterval);
+	ConsumablesSpawner(const sf::Vector2f& position, const sf::Vector2f& size, sf::Time spawnInterval);
 	
 private:
 	sf::Time spawnInterval;
 	sf::Time timeElapsed;
 	sf::Clock clock;
-	const GameSettings& gameSettings;
+	const sf::Vector2f position;
+	const sf::Vector2f size;
 
 	void awake() override;
 	void update() override;

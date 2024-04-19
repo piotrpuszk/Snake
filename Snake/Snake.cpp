@@ -65,6 +65,13 @@ void Snake::onEnterCollision(GameObject* gameObject)
 	if (isEatingFood(gameObject))
 	{
 		onEatFruit(dynamic_cast<Consumable*>(gameObject));
+		return;
+	}
+
+	if (dynamic_cast<Wall*>(gameObject) != nullptr)
+	{
+		std::cout << "Collision => Game over!\n";
+		GameObjectInstantiator::destroy(this);
 	}
 }
 

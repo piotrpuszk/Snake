@@ -23,8 +23,8 @@ public:
 private:
 	Snake* createSnake();
 	Consumable* createConsumable(sf::Vector2f position, size_t growSize = 1);
-	ConsumablesSpawner* createConsumablesSpawner(GameSettings& gameSettings, sf::Time spawnInterval);
-	Wall* createWall(sf::Vector2f position, sf::Vector2f size);
+	ConsumablesSpawner* createConsumablesSpawner(const sf::Vector2f& position, const sf::Vector2f& size, sf::Time spawnInterval);
+	Wall* createWall(sf::Vector2f meshRendererPosition, sf::Vector2f meshRendererSize, sf::Vector2f boxColliderPosition, sf::Vector2f boxColliderSize);
 	BackgroundTexture* createBackgroundTexture(sf::Vector2f position, sf::Vector2f size);
 
 	TextureStore textureStore;

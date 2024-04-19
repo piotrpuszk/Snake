@@ -21,16 +21,16 @@ int main()
 
 	auto snake{ gameObjectFactory.create<Snake>() };
 
-	std::vector<Consumable*> consumables{};
-	consumables.push_back(gameObjectFactory.create<Consumable>(sf::Vector2f{ 100.f, 100.f }, 1));
-
 	std::vector<Wall*> walls
 	{ 
-		gameObjectFactory.create<Wall>(sf::Vector2f{0, 0}, sf::Vector2f{ 50, 600 }), 
-		gameObjectFactory.create<Wall>(sf::Vector2f{0, 0}, sf::Vector2f{ 800, 50 }), 
-		gameObjectFactory.create<Wall>(sf::Vector2f{0, 550}, sf::Vector2f{ 800, 50 }), 
-		gameObjectFactory.create<Wall>(sf::Vector2f{750, 0}, sf::Vector2f{ 50, 600 }), 
+		gameObjectFactory.create<Wall>(sf::Vector2f{0, 0}, sf::Vector2f{50, 600}, sf::Vector2f{25, 300}, sf::Vector2f{50, 600}),
+		gameObjectFactory.create<Wall>(sf::Vector2f{750, 0}, sf::Vector2f{50, 600}, sf::Vector2f{775, 300}, sf::Vector2f{50, 600}),
+		gameObjectFactory.create<Wall>(sf::Vector2f{50, 50}, sf::Vector2f{50, 700}, sf::Vector2f{400, 25}, sf::Vector2f{700, 50}),
+		gameObjectFactory.create<Wall>(sf::Vector2f{50, 600}, sf::Vector2f{50, 700}, sf::Vector2f{400, 575}, sf::Vector2f{700, 50}),
 	};
+
+	walls[2]->getComponent<MeshRenderer>()->rotate(-90);
+	walls[3]->getComponent<MeshRenderer>()->rotate(-90);
 
 	auto backgroundTexture{ gameObjectFactory.create<BackgroundTexture>(sf::Vector2f{}, sf::Vector2f{800, 600}) };
 
@@ -38,13 +38,6 @@ int main()
 	for (const auto& e : snake->getComponents<BoxCollider>())
 	{
 		collisionSystem.addSnakeCollider(ObjectCollider{ snake, e });
-	}
-	for (auto& consumable : consumables)
-	{
-		for (const auto& e : consumable->getComponents<BoxCollider>())
-		{
-			collisionSystem.addOtherCollider(ObjectCollider{ consumable, e });
-		}
 	}
 	for (auto& wall : walls)
 	{
@@ -61,7 +54,7 @@ int main()
 	GameObjectInstantiator::setGameObjectStore(&gameObjectStore);
 	GameObjectInstantiator::setCollisionSystem(&collisionSystem);
 
-	gameObjectFactory.create<ConsumablesSpawner>(gameSettings, sf::seconds(1.f));
+	gameObjectFactory.create<ConsumablesSpawner>(sf::Vector2f{ 400, 300 }, sf::Vector2f{650, 450}, sf::seconds(1.f));
 
 
 	while (window.isOpen())
