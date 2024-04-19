@@ -1,6 +1,7 @@
 #include "GeneratorOfSnakePartPositions.h"
 #include "Maths.h"
 #include <iostream>
+#include "Orientation.h"
 
 GeneratorOfSnakePartPositions::GeneratorOfSnakePartPositions(TurnPointStore* turnPointStore, size_t positionCount, float elementSize)
 	:
@@ -18,11 +19,11 @@ void GeneratorOfSnakePartPositions::increasePositionCount()
 	++positionCount;
 }
 
-std::vector<sf::Vector2f> GeneratorOfSnakePartPositions::getPositions(sf::Vector2f startPosition, sf::Vector2f forward)
+std::vector<std::tuple<sf::Vector2f, float>> GeneratorOfSnakePartPositions::getPositions(sf::Vector2f startPosition, sf::Vector2f forward)
 {
 	currentForward = forward;
 	currentPosition = startPosition;
-	positions = { currentPosition };
+	positions = { std::tuple{currentPosition, 0.f} };
 	const auto& turnPoints = turnPointStore->getTurnPoints();
 
 	for (turnPointIterator = std::begin(turnPoints); turnPointIterator != std::end(turnPoints); ++turnPointIterator)
@@ -49,13 +50,14 @@ void GeneratorOfSnakePartPositions::addFromCurrentPositionToTurnPoint()
 	for (size_t i{}; i < numberOfTiles; ++i)
 	{
 		currentPosition -= elementSize * currentForward;
-		positions.push_back(currentPosition);
+		positions.push_back({ currentPosition, 0.f });
 	}
 
 	const auto remainingDistance{ distance - numberOfTiles * elementSize };
 
 	if (remainingDistance <= 0)
 	{
+		std::get<1>(positions[positions.size() - 1]) = Orientation::getAngle(currentForward, turnPointIterator->getDirectionFrom());
 		currentForward = turnPointIterator->getDirectionFrom();
 	}
 }
@@ -63,6 +65,7 @@ void GeneratorOfSnakePartPositions::addFromCurrentPositionToTurnPoint()
 void GeneratorOfSnakePartPositions::addAtTurnPoint()
 {
 	auto availableDistance{ elementSize };
+	float rotationAngle{};
 
 	for (auto turnPoint = turnPointIterator; turnPoint != std::end(turnPointStore->getTurnPoints()); ++turnPoint)
 	{
@@ -70,12 +73,14 @@ void GeneratorOfSnakePartPositions::addAtTurnPoint()
 
 		if (distanceBetween > availableDistance)
 		{
+			rotationAngle += Orientation::getAngle(currentForward, turnPoint->getDirectionTo());
 			currentForward = turnPoint->getDirectionTo();
 			--turnPointIterator;
 			break;
 		}
 		availableDistance -= distanceBetween;
 		currentPosition = turnPoint->getPosition();
+		rotationAngle += Orientation::getAngle(currentForward, turnPoint->getDirectionFrom());
 		currentForward = turnPoint->getDirectionFrom();
 		++turnPointIterator;
 	}
@@ -85,7 +90,7 @@ void GeneratorOfSnakePartPositions::addAtTurnPoint()
 		currentPosition -= availableDistance * currentForward;
 	}
 
-	positions.push_back(currentPosition);
+	positions.push_back({ currentPosition , rotationAngle });
 }
 
 void GeneratorOfSnakePartPositions::addAfterTurnPoints()
@@ -93,6 +98,6 @@ void GeneratorOfSnakePartPositions::addAfterTurnPoints()
 	for (size_t i{}; i < positionCount; ++i)
 	{
 		currentPosition -= elementSize * currentForward;
-		positions.push_back(currentPosition);
+		positions.push_back({ currentPosition, 0.f });
 	}
 }

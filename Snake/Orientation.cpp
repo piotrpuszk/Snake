@@ -30,6 +30,16 @@ bool Orientation::isLeft(sf::Vector2f direction) noexcept
 	return direction == WorldDirection::left;
 }
 
+bool Orientation::isUpOrDown(sf::Vector2f direction) noexcept
+{
+	return isUp(direction) or isDown(direction);
+}
+
+bool Orientation::isLeftOrRight(sf::Vector2f direction) noexcept
+{
+	return isLeft(direction) || isRight(direction);
+}
+
 float Orientation::getAngle(sf::Vector2f from, sf::Vector2f to) noexcept
 {
 	if (isUp(from) && isRight(to))

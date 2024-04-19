@@ -37,3 +37,5 @@
 Snake/Snake.aps
 Snake/Snake.rc
 Snake/resource.h
+
+**/*.xcf

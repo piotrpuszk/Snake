@@ -11,6 +11,8 @@
 #include "Consumable.h"
 #include "SnakeCollisionChecker.h"
 #include "TurnDirectionHandler.h"
+#include <tuple>
+#include "TextureStore.h"
 
 class Snake : public GameObject
 {
@@ -26,9 +28,9 @@ private:
 	void move();
 	void onEatFruit(Consumable* consumable);
 	void grow(int amount);
-	void updateComponentsPositions(const std::vector<sf::Vector2f>& positions);
-	void removeUsedUpTurnPoints(const std::vector<sf::Vector2f>& positions);
-	bool isEatingItself(const std::vector<sf::Vector2f>& positions) const;
+	void updateComponentsPositions(const std::vector<std::tuple<sf::Vector2f, float>>& positions);
+	void removeUsedUpTurnPoints(const std::vector<std::tuple<sf::Vector2f, float>>& positions);
+	bool isEatingItself(const std::vector<std::tuple<sf::Vector2f, float>>& positions) const;
 	bool isEatingFood(GameObject* gameObject) const;
 
 	SnakeMovement* snakeMovement;
@@ -38,6 +40,7 @@ private:
 	SnakeCollisionChecker* snakeCollisionChecker;
 	TurnPointStore* turnPointStore;
 	GeneratorOfSnakePartPositions* generatorOfSnakePartPositions;
+	TextureStore* textureStore;
 	
 	float elementSize;
 	float elementSizeSquared;

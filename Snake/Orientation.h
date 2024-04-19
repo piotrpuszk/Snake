@@ -9,8 +9,13 @@ class Orientation
 public:
 	static bool isUp(sf::Vector2f direction) noexcept;
 	static bool isDown(sf::Vector2f direction) noexcept;
+
 	static bool isRight(sf::Vector2f direction) noexcept;
 	static bool isLeft(sf::Vector2f direction) noexcept;
+
+	static bool isUpOrDown(sf::Vector2f direction) noexcept;
+	static bool isLeftOrRight(sf::Vector2f direction) noexcept;
+
 	static float getAngle(sf::Vector2f from, sf::Vector2f to) noexcept;
 	static std::vector<sf::Vector2f> getOrientation(sf::Vector2f direction) noexcept;
 private:

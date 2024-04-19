@@ -12,6 +12,12 @@ sf::Sprite MeshRenderer::getSprite() const noexcept
 	return sprite;
 }
 
+
+void MeshRenderer::setSprite(sf::Sprite value)
+{
+	sprite = value;
+}
+
 void MeshRenderer::rotate(float angle) noexcept
 {
 	sprite.rotate(angle);
@@ -20,6 +26,11 @@ void MeshRenderer::rotate(float angle) noexcept
 void MeshRenderer::setPosition(sf::Vector2f position)
 {
 	sprite.setPosition(position);
+}
+
+void MeshRenderer::setRotation(float rotation)
+{
+	sprite.setRotation(rotation);
 }
 
 int MeshRenderer::getRenderPriority() const noexcept

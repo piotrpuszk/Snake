@@ -9,7 +9,7 @@ class SnakeCollisionChecker : public Component
 {
 public:
 	SnakeCollisionChecker(Transform* transform, float elementSize);
-	bool IsCollidingWithItself(const std::vector<TurnPoint>& turnPoints, const std::vector<sf::Vector2f> positions);
+	bool IsCollidingWithItself(const std::vector<TurnPoint>& turnPoints, const std::vector<std::tuple<sf::Vector2f, float>>& positions);
 private:
 	float elementSize;
 	float elementHalfOfSize;

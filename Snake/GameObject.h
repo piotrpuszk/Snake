@@ -25,6 +25,8 @@ public:
 	template <typename T, typename... Types>
 	T* addComponent(Types... args);
 	template<typename T>
+	T* addComponent(std::unique_ptr<T> component);
+	template<typename T>
 	void removeComponent(T* component);
 private:
 	virtual void awake() = 0;
@@ -74,6 +76,22 @@ template <typename T, typename... Types>
 inline T* GameObject::addComponent(Types... args)
 {
 	components.push_back(std::make_unique<T>(args...));
+	const auto& result{ dynamic_cast<T*>(components.back().get()) };
+	if constexpr (std::is_same_v<T, MeshRenderer>)
+	{
+		if (onMeshRendererAdded)
+		{
+			onMeshRendererAdded(result);
+		}
+	}
+
+	return result;
+}
+
+template<typename T>
+inline T* GameObject::addComponent(std::unique_ptr<T> component)
+{
+	components.push_back(std::move(component));
 	const auto& result{ dynamic_cast<T*>(components.back().get()) };
 	if constexpr (std::is_same_v<T, MeshRenderer>)
 	{

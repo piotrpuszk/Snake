@@ -201,11 +201,19 @@
     <Image Include="food01.png" />
     <Image Include="polyHavenBrick03.jpg" />
     <Image Include="polyHavenBrownMudLeaves.jpg" />
+    <Image Include="snakePartTexture.png" />
     <Image Include="testTexture.jpg" />
     <Image Include="testTexture2.jpg" />
+    <Image Include="turnPointLeftBottomTexture.png" />
+    <Image Include="turnPointLeftUp.png" />
+    <Image Include="turnPointTexture.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Snake.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="food01.xcf" />
+    <None Include="snakePartTexture.xcf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

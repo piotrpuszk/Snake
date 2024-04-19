@@ -18,6 +18,7 @@ Snake* GameObjectFactory::createSnake()
 	const auto& turnPointStore{ snake->addComponent<TurnPointStore>() };
 	snake->addComponent<GeneratorOfSnakePartPositions>(turnPointStore, snakePartCount, snakePartSize);
 	auto transform{ snake->addComponent<Transform>() };
+	snake->addComponent(std::make_unique<TextureStore>(textureStore));
 	transform->setForward({ 1.f, 0.f });
 	transform->setPosition({ 300.f, 150.f });
 	snake->addComponent<SnakeCollisionChecker>(transform, snakePartSize);
@@ -25,39 +26,45 @@ Snake* GameObjectFactory::createSnake()
 
 	sf::Sprite sprite{};
 	sprite.setOrigin({ snakePartSize / 2.f, snakePartSize / 2.f });
-	sprite.setTexture(textureStore.getTest());
-	sprite.setTextureRect(sf::IntRect{ 0, 0, 20, 20 });
+	sprite.setTexture(textureStore.getSnakeHead());
 	for (size_t i = 0; i < snakePartCount; i++)
 	{
+		if (i == snakePartCount - 1)
+		{
+			sprite.setTexture(textureStore.getSnakeTail());
+		}
 		snake->addComponent<MeshRenderer>(sprite);
+		sprite.setTexture(textureStore.getSnakePart());
 	}
-	snake->addComponent<BoxCollider>(transform, transform->getPosition(), sf::Vector2f{snakePartSize, snakePartSize});
+	snake->addComponent<BoxCollider>(transform, transform->getPosition(), sf::Vector2f{ snakePartSize, snakePartSize });
 
 	return dynamic_cast<Snake*>(gameObjectStore.addGameObject(std::move(snake)));
 }
 
 Consumable* GameObjectFactory::createConsumable(sf::Vector2f position, size_t growSize)
 {
-	float size{ 20.f };
 	auto food01 = std::make_unique<Consumable>(growSize);
 
 	auto transform = food01->addComponent<Transform>();
 	transform->setPosition(position);
 
-	food01->addComponent<BoxCollider>(transform, position, sf::Vector2f{ size, size });
 
 	sf::Sprite sprite{};
-	sprite.setOrigin({ size / 2.f, size / 2.f });
 	sprite.setTexture(textureStore.getFood01());
+	const auto& size{ sprite.getTexture()->getSize() };
+	sprite.setOrigin({ static_cast<float>(size.x) / 2.f, static_cast<float>(size.y) / 2.f });
 	sprite.setPosition(position);
 	food01->addComponent<MeshRenderer>(sprite);
+
+
+	food01->addComponent<BoxCollider>(transform, position, sf::Vector2f{ static_cast<float>(size.x), static_cast<float>(size.y) });
 
 	return dynamic_cast<Consumable*>(gameObjectStore.addGameObject(std::move(food01)));
 }
 
 ConsumablesSpawner* GameObjectFactory::createConsumablesSpawner(const sf::Vector2f& position, const sf::Vector2f& size, sf::Time spawnInterval)
 {
-	auto consumablesSpawner{ std::make_unique<ConsumablesSpawner>(position, size, spawnInterval)};
+	auto consumablesSpawner{ std::make_unique<ConsumablesSpawner>(position, size, spawnInterval) };
 
 	return dynamic_cast<ConsumablesSpawner*>(gameObjectStore.addGameObject(std::move(consumablesSpawner)));
 }
@@ -89,7 +96,7 @@ BackgroundTexture* GameObjectFactory::createBackgroundTexture(sf::Vector2f posit
 	sf::Vector2f scale{ size.x / texture.getSize().x, size.y / texture.getSize().y };
 	sprite.setScale(scale);
 	sprite.setPosition(position);
-	backgroundTexture->addComponent<MeshRenderer>(sprite, -1);
+	backgroundTexture->addComponent<MeshRenderer>(sprite, -1000);
 
 	return dynamic_cast<BackgroundTexture*>(gameObjectStore.addGameObject(std::move(backgroundTexture)));
 }

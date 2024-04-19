@@ -12,8 +12,11 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
-	GameSettings gameSettings{ sf::seconds(0.02f), {800, 600} };
+
+	GameSettings gameSettings{ sf::seconds(0.02f), {1920, 1080} };
+	sf::RenderWindow window(sf::VideoMode(gameSettings.getMapSize().x, gameSettings.getMapSize().y), "My window", sf::Style::Default | sf::Style::Fullscreen);
+
+	const auto& map{ gameSettings.getMapSize2f() };
 
 	TextureStore textureStore{};
 	GameObjectStore gameObjectStore{};
@@ -21,18 +24,22 @@ int main()
 
 	auto snake{ gameObjectFactory.create<Snake>() };
 
+	const float wallWidth{ 50.f };
+	const sf::Vector2f wallLeftSize{ wallWidth, map.y };
+	const sf::Vector2f wallUpSize{ wallWidth, map.x };
+
 	std::vector<Wall*> walls
-	{ 
-		gameObjectFactory.create<Wall>(sf::Vector2f{0, 0}, sf::Vector2f{50, 600}, sf::Vector2f{25, 300}, sf::Vector2f{50, 600}),
-		gameObjectFactory.create<Wall>(sf::Vector2f{750, 0}, sf::Vector2f{50, 600}, sf::Vector2f{775, 300}, sf::Vector2f{50, 600}),
-		gameObjectFactory.create<Wall>(sf::Vector2f{50, 50}, sf::Vector2f{50, 700}, sf::Vector2f{400, 25}, sf::Vector2f{700, 50}),
-		gameObjectFactory.create<Wall>(sf::Vector2f{50, 600}, sf::Vector2f{50, 700}, sf::Vector2f{400, 575}, sf::Vector2f{700, 50}),
+	{
+		gameObjectFactory.create<Wall>(sf::Vector2f{0, 0}, wallLeftSize, sf::Vector2f{wallWidth * 0.5f, map.y * 0.5f}, wallLeftSize),
+		gameObjectFactory.create<Wall>(sf::Vector2f{map.x - wallWidth, 0}, wallLeftSize, sf::Vector2f{map.x - wallWidth * 0.5f, map.y * 0.5f}, wallLeftSize),
+		gameObjectFactory.create<Wall>(sf::Vector2f{wallWidth, wallWidth}, wallUpSize, sf::Vector2f{map.x * 0.5f, wallWidth * 0.5f}, sf::Vector2f{wallUpSize.y, wallUpSize.x}),
+		gameObjectFactory.create<Wall>(sf::Vector2f{wallWidth, map.y}, wallUpSize, sf::Vector2f{map.x * 0.5f, map.y - wallWidth * 0.5f}, sf::Vector2f{wallUpSize.y, wallUpSize.x}),
 	};
 
 	walls[2]->getComponent<MeshRenderer>()->rotate(-90);
 	walls[3]->getComponent<MeshRenderer>()->rotate(-90);
 
-	auto backgroundTexture{ gameObjectFactory.create<BackgroundTexture>(sf::Vector2f{}, sf::Vector2f{800, 600}) };
+	auto backgroundTexture{ gameObjectFactory.create<BackgroundTexture>(sf::Vector2f{}, map) };
 
 	CollisionSystem collisionSystem{};
 	for (const auto& e : snake->getComponents<BoxCollider>())
@@ -54,7 +61,8 @@ int main()
 	GameObjectInstantiator::setGameObjectStore(&gameObjectStore);
 	GameObjectInstantiator::setCollisionSystem(&collisionSystem);
 
-	gameObjectFactory.create<ConsumablesSpawner>(sf::Vector2f{ 400, 300 }, sf::Vector2f{650, 450}, sf::seconds(1.f));
+	const auto additionalMargin{ 50.f };
+	gameObjectFactory.create<ConsumablesSpawner>(map * 0.5f, sf::Vector2f{ map.x - wallWidth * 2.f - additionalMargin, map.y - wallWidth * 2.f - additionalMargin }, sf::seconds(1.f));
 
 
 	while (window.isOpen())

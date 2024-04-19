@@ -17,3 +17,8 @@ sf::Vector2u GameSettings::getMapSize() const noexcept
 {
 	return mapSize;
 }
+
+sf::Vector2f GameSettings::getMapSize2f() const noexcept
+{
+	return sf::Vector2f{ static_cast<float>(mapSize.x), static_cast<float>(mapSize.y) };
+}

@@ -9,7 +9,7 @@ SnakeCollisionChecker::SnakeCollisionChecker(Transform* transform, float element
 {
 }
 
-bool SnakeCollisionChecker::IsCollidingWithItself(const std::vector<TurnPoint>& turnPoints, const std::vector<sf::Vector2f> positions)
+bool SnakeCollisionChecker::IsCollidingWithItself(const std::vector<TurnPoint>& turnPoints, const std::vector<std::tuple<sf::Vector2f, float>>& positions)
 {
 	if (turnPoints.size() < 2)
 	{
@@ -34,7 +34,7 @@ bool SnakeCollisionChecker::IsCollidingWithItself(const std::vector<TurnPoint>& 
 	for (size_t i{ 1 }; i < turnPoints.size(); i++)
 	{
 		auto position1{ turnPoints[i].getPosition() };
-		auto position2{ i + 1 == turnPoints.size() ? positions[positions.size() - 1] : turnPoints[i + 1].getPosition() };
+		auto position2{ i + 1 == turnPoints.size() ? std::get<0>(positions[positions.size() - 1]) : turnPoints[i + 1].getPosition()};
 
 		if (position1.y == position2.y)
 		{
