@@ -18,7 +18,7 @@
 class GameObjectFactory
 {
 public:
-	GameObjectFactory(TextureStore textureStore, GameObjectStore& gameObjectStore);
+	GameObjectFactory(TextureStore textureStore, GameObjectStore& gameObjectStore, const GameSettings& settings);
 	
 	template<typename T, typename... Types>
 	T* create(Types&&... args);
@@ -32,11 +32,12 @@ private:
 		float meshRendererSize,
 		sf::Vector2f boxColliderPosition,
 		sf::Vector2f boxColliderSize);
-	BackgroundTexture* createBackgroundTexture(sf::Vector2f mapSize);
-	GameOver* createGameOver(sf::Vector2f position);
+	BackgroundTexture* createBackgroundTexture();
+	GameOver* createGameOver();
 
 	TextureStore textureStore;
 	GameObjectStore& gameObjectStore;
+	const GameSettings& settings;
 };
 
 template<typename T, typename... Types>
@@ -44,7 +45,7 @@ inline T* GameObjectFactory::create(Types&&... args)
 {
 	if constexpr (std::is_same_v<T, Snake>)
 	{
-		return createSnake();
+		return createSnake(std::forward<Types>(args)...);
 	}
 
 	if constexpr (std::is_same_v<T, Consumable>)
@@ -69,6 +70,6 @@ inline T* GameObjectFactory::create(Types&&... args)
 
 	if constexpr (std::is_same_v<T, GameOver>)
 	{
-		return createGameOver(args...);
+		return createGameOver(std::forward<Types>(args)...);
 	}
 }

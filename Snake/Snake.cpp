@@ -60,7 +60,7 @@ void Snake::fixedUpdate()
 	removeUsedUpTurnPoints(positions);
 	if (isEatingItself(positions))
 	{
-		GameObjectInstantiator::instantiate<GameOver>(sf::Vector2f{1920, 1080} * 0.5f);
+		GameObjectInstantiator::instantiate<GameOver>();
 		GameObjectInstantiator::destroy(this);
 	}
 }
@@ -75,7 +75,7 @@ void Snake::onEnterCollision(GameObject* gameObject)
 
 	if (dynamic_cast<Wall*>(gameObject) != nullptr)
 	{
-		std::cout << "Collision => Game over!\n";
+		GameObjectInstantiator::instantiate<GameOver>();
 		GameObjectInstantiator::destroy(this);
 	}
 }
@@ -93,7 +93,7 @@ void Snake::turn()
 	sprite.setOrigin(meshRenderers[0]->getSprite().getOrigin());
 	sprite.setTexture(turnPointTextureSelector->select(from, to));
 
-	auto meshRenderer{ addComponent<MeshRenderer>(sprite, 1) };
+	auto meshRenderer{ addComponent<MeshRenderer>(sprite, turnPointStore->getTurnPointRenderPriority()) };
 	meshRenderer->setPosition(transform->getPosition());
 
 	turnPointStore->add(TurnPoint{ transform->getPosition(), from, to, meshRenderer });

@@ -1,43 +1,41 @@
 #include "GameObjectFactory.h"
 #include <iostream>
 
-GameObjectFactory::GameObjectFactory(TextureStore textureStore, GameObjectStore& gameObjectStore)
+GameObjectFactory::GameObjectFactory(TextureStore textureStore, GameObjectStore& gameObjectStore, const GameSettings& settings)
 	:
 	textureStore{ textureStore },
-	gameObjectStore{ gameObjectStore }
+	gameObjectStore{ gameObjectStore },
+	settings{ settings }
 {
 }
 
 Snake* GameObjectFactory::createSnake()
 {
-	float snakePartSize{ 20.f };
-	size_t snakePartCount{ 10 };
-
 	auto snake = std::make_unique<Snake>();
 
-	const auto& turnPointStore{ snake->addComponent<TurnPointStore>() };
-	snake->addComponent<GeneratorOfSnakePartPositions>(turnPointStore, snakePartCount, snakePartSize);
+	const auto& turnPointStore{ snake->addComponent<TurnPointStore>(settings.getTurnPointRenderPriority()) };
+	snake->addComponent<GeneratorOfSnakePartPositions>(turnPointStore, settings.getInitialSnakePartCount(), settings.getSnakePartSize());
 	auto transform{ snake->addComponent<Transform>() };
 	snake->addComponent(std::make_unique<TextureStore>(textureStore));
 	snake->addComponent<TurnPointTextureSelector>(std::make_unique<TextureStore>(textureStore));
-	transform->setForward({ 1.f, 0.f });
-	transform->setPosition({ 300.f, 150.f });
-	snake->addComponent<SnakeCollisionChecker>(transform, snakePartSize);
-	snake->addComponent<SnakeMovement>(transform, 5.f, snakePartSize);
+	transform->setForward(settings.getInitialSnakeForward());
+	transform->setPosition(settings.getInitialSnakePosition());
+	snake->addComponent<SnakeCollisionChecker>(transform, settings.getSnakePartSize());
+	snake->addComponent<SnakeMovement>(transform, settings.getInitialSnakeSpeed(), settings.getSnakePartSize());
 
 	sf::Sprite sprite{};
-	sprite.setOrigin({ snakePartSize / 2.f, snakePartSize / 2.f });
+	sprite.setOrigin({ settings.getSnakePartSize() / 2.f, settings.getSnakePartSize() / 2.f });
 	sprite.setTexture(textureStore.getSnakeHead());
-	for (size_t i = 0; i < snakePartCount; i++)
+	for (size_t i = 0; i < settings.getInitialSnakePartCount(); i++)
 	{
-		if (i == snakePartCount - 1)
+		if (i == settings.getInitialSnakePartCount() - 1)
 		{
 			sprite.setTexture(textureStore.getSnakeTail());
 		}
 		snake->addComponent<MeshRenderer>(sprite);
 		sprite.setTexture(textureStore.getSnakePart());
 	}
-	snake->addComponent<BoxCollider>(transform, transform->getPosition(), sf::Vector2f{ snakePartSize, snakePartSize });
+	snake->addComponent<BoxCollider>(transform, transform->getPosition(), sf::Vector2f{ settings.getSnakePartSize(), settings.getSnakePartSize() });
 
 	return dynamic_cast<Snake*>(gameObjectStore.addGameObject(std::move(snake)));
 }
@@ -98,35 +96,36 @@ Wall* GameObjectFactory::createWall(sf::Vector2f meshRendererPosition,
 	return dynamic_cast<Wall*>(gameObjectStore.addGameObject(std::move(wall)));
 }
 
-BackgroundTexture* GameObjectFactory::createBackgroundTexture(sf::Vector2f mapSize)
+BackgroundTexture* GameObjectFactory::createBackgroundTexture()
 {
 	auto backgroundTexture{ std::make_unique<BackgroundTexture>() };
 	const auto& texture{ textureStore.getBackground() };
 	sf::Vector2f position{};
-	for (size_t row{}; row < mapSize.x / texture.getSize().x; row++)
+	for (size_t row{}; row < settings.getMapSize2f().x / texture.getSize().x; row++)
 	{
-		for (size_t column{}; column < mapSize.x / texture.getSize().x; column++)
+		for (size_t column{}; column < settings.getMapSize2f().x / texture.getSize().x; column++)
 		{
 			position = { row * static_cast<float>(texture.getSize().x), column * static_cast<float>(texture.getSize().y) };
 			sf::Sprite sprite{};
 			sprite.setTexture(texture);
 			sprite.setPosition(position);
-			backgroundTexture->addComponent<MeshRenderer>(sprite, -1000);
+			backgroundTexture->addComponent<MeshRenderer>(sprite, settings.getBackgroundRenderPriority());
 		}
 	}
 
 	return dynamic_cast<BackgroundTexture*>(gameObjectStore.addGameObject(std::move(backgroundTexture)));
 }
 
-GameOver* GameObjectFactory::createGameOver(sf::Vector2f position)
+GameOver* GameObjectFactory::createGameOver()
 {
 	auto gameOver{ std::make_unique<GameOver>() };
 	const auto& texture{ textureStore.getGameOver() };
+	const sf::Vector2f center{settings.getMapSize2f() * 0.5f};
 	sf::Sprite sprite{};
 	sprite.setTexture(texture);
 	sf::Vector2f textureHalfSize{ static_cast<float>(texture.getSize().x) * 0.5f, static_cast<float>(texture.getSize().y) * 0.5f };
-	sprite.setPosition(position - textureHalfSize);
-	gameOver->addComponent<MeshRenderer>(sprite, 1000);
+	sprite.setPosition(center - textureHalfSize);
+	gameOver->addComponent<MeshRenderer>(sprite, settings.getGameOverRenderPriority());
 
 	return dynamic_cast<GameOver*>(gameObjectStore.addGameObject(std::move(gameOver)));
 }

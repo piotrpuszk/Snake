@@ -1,8 +1,9 @@
 #include "TurnPointStore.h"
 
-TurnPointStore::TurnPointStore()
+TurnPointStore::TurnPointStore(int turnPointRenderPriority)
 	:
-	turnPoints{}
+	turnPoints{},
+	turnPointRenderPriority{ turnPointRenderPriority }
 {
 }
 
@@ -30,4 +31,9 @@ void TurnPointStore::remove(TurnPoint& turnPoint)
 std::vector<TurnPoint>& TurnPointStore::getTurnPoints()
 {
 	return turnPoints;
+}
+
+const int TurnPointStore::getTurnPointRenderPriority() const noexcept
+{
+	return turnPointRenderPriority;
 }
