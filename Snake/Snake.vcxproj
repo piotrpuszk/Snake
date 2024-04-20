@@ -144,6 +144,7 @@
     <ClCompile Include="GameObjectFactory.cpp" />
     <ClCompile Include="GameObjectInstantiator.cpp" />
     <ClCompile Include="GameObjectStore.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GameSettings.cpp" />
     <ClCompile Include="SnakeCollisionChecker.cpp" />
     <ClCompile Include="ConsumablesSpawner.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TurnPoint.cpp" />
     <ClCompile Include="TurnPointStore.cpp" />
+    <ClCompile Include="TurnPointTextureSelector.cpp" />
     <ClCompile Include="UserInputHandler.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="WorldDirection.cpp" />
@@ -175,6 +177,7 @@
     <ClInclude Include="GameObjectFactory.h" />
     <ClInclude Include="GameObjectInstantiator.h" />
     <ClInclude Include="GameObjectStore.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="SnakeCollisionChecker.h" />
@@ -193,27 +196,26 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TurnPoint.h" />
     <ClInclude Include="TurnPointStore.h" />
+    <ClInclude Include="TurnPointTextureSelector.h" />
     <ClInclude Include="UserInputHandler.h" />
     <ClInclude Include="Wall.h" />
     <ClInclude Include="WorldDirection.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Brick01.png" />
     <Image Include="food01.png" />
-    <Image Include="polyHavenBrick03.jpg" />
-    <Image Include="polyHavenBrownMudLeaves.jpg" />
+    <Image Include="grass01.png" />
+    <Image Include="snakeHead.png" />
     <Image Include="snakePartTexture.png" />
-    <Image Include="testTexture.jpg" />
-    <Image Include="testTexture2.jpg" />
+    <Image Include="snakeTail.png" />
     <Image Include="turnPointLeftBottomTexture.png" />
     <Image Include="turnPointLeftUp.png" />
+    <Image Include="turnPointRightBottomTexture.png" />
+    <Image Include="turnPointRightUpTexture.png" />
     <Image Include="turnPointTexture.png" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Snake.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="food01.xcf" />
-    <None Include="snakePartTexture.xcf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

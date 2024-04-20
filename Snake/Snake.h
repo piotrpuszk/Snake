@@ -1,4 +1,5 @@
 #pragma once
+#include "TurnPointTextureSelector.h"
 #include <vector>
 #include <memory>
 #include "GameObject.h"
@@ -41,6 +42,7 @@ private:
 	TurnPointStore* turnPointStore;
 	GeneratorOfSnakePartPositions* generatorOfSnakePartPositions;
 	TextureStore* textureStore;
+	TurnPointTextureSelector* turnPointTextureSelector;
 	
 	float elementSize;
 	float elementSizeSquared;

@@ -18,7 +18,9 @@ Snake::Snake()
 	boxColliders{},
 	snakeCollisionChecker{},
 	elementSize{},
-	elementSizeSquared{}
+	elementSizeSquared{},
+	textureStore{},
+	turnPointTextureSelector{}
 {
 
 }
@@ -33,6 +35,7 @@ void Snake::awake()
 	turnPointStore = getComponent<TurnPointStore>();
 	generatorOfSnakePartPositions = getComponent<GeneratorOfSnakePartPositions>();
 	textureStore = getComponent<TextureStore>();
+	turnPointTextureSelector = getComponent<TurnPointTextureSelector>();
 
 	elementSize = boxColliders[0]->getSize().x;
 	elementSizeSquared = elementSize * elementSize;
@@ -57,7 +60,7 @@ void Snake::fixedUpdate()
 	removeUsedUpTurnPoints(positions);
 	if (isEatingItself(positions))
 	{
-		std::cout << "Game over!\n";
+		GameObjectInstantiator::instantiate<GameOver>(sf::Vector2f{1920, 1080} * 0.5f);
 		GameObjectInstantiator::destroy(this);
 	}
 }
@@ -84,36 +87,20 @@ void Snake::turn()
 		return;
 	}
 
+	auto [from, to] = std::pair{ transform->getForward(), UserInputHandler::getLatestDirection() };
+
 	sf::Sprite sprite{};
 	sprite.setOrigin(meshRenderers[0]->getSprite().getOrigin());
-	if (Orientation::isRight(transform->getForward()) && Orientation::isDown(UserInputHandler::getLatestDirection())
-		|| Orientation::isUp(transform->getForward()) && Orientation::isLeft(UserInputHandler::getLatestDirection()))
-	{
-		sprite.setTexture(textureStore->getTurnPointLeftBottom());
-	}
-	else if (Orientation::isRight(transform->getForward()) && Orientation::isUp(UserInputHandler::getLatestDirection())
-		|| Orientation::isDown(transform->getForward()) && Orientation::isLeft(UserInputHandler::getLatestDirection()))
-	{
-		sprite.setTexture(textureStore->getTurnPointLeftUp());
-	}
-	else if (Orientation::isLeft(transform->getForward()) && Orientation::isDown(UserInputHandler::getLatestDirection())
-		|| Orientation::isUp(transform->getForward()) && Orientation::isRight(UserInputHandler::getLatestDirection()))
-	{
-		sprite.setTexture(textureStore->getTurnPointRightBottom());
-	}
-	else if (Orientation::isLeft(transform->getForward()) && Orientation::isUp(UserInputHandler::getLatestDirection())
-		|| Orientation::isDown(transform->getForward()) && Orientation::isRight(UserInputHandler::getLatestDirection()))
-	{
-		sprite.setTexture(textureStore->getTurnPointRightUp());
-	}
+	sprite.setTexture(turnPointTextureSelector->select(from, to));
+
 	auto meshRenderer{ addComponent<MeshRenderer>(sprite, 1) };
 	meshRenderer->setPosition(transform->getPosition());
-	turnPointStore->add(TurnPoint{ transform->getPosition(), transform->getForward(), UserInputHandler::getLatestDirection(), meshRenderer });
 
-	snakeMovement->turn(UserInputHandler::getLatestDirection());
+	turnPointStore->add(TurnPoint{ transform->getPosition(), from, to, meshRenderer });
 
-	const auto& latestTurnPoint{ turnPointStore->getTurnPoints()[0] };
-	const auto angle{ Orientation::getAngle(latestTurnPoint.getDirectionFrom(), latestTurnPoint.getDirectionTo()) };
+	snakeMovement->turn(to);
+
+	const auto angle{ Orientation::getAngle(from, to) };
 	meshRenderers[0]->rotate(angle);
 
 	UserInputHandler::resetLatestDirection();
@@ -162,15 +149,17 @@ void Snake::grow(int amount)
 
 void Snake::updateComponentsPositions(const std::vector<std::tuple<sf::Vector2f, float>>& positions)
 {
-	boxColliders[0]->setPosition(std::get<0>(positions[0]));
+	auto [position, rotationAngle] = positions[0];
+	boxColliders[0]->setPosition(position);
 
 	const auto& headRotation{ meshRenderers[0]->getSprite().getRotation() };
 	auto rotation{ headRotation };
 	for (size_t i{}; i < positions.size(); i++)
 	{
-		meshRenderers[i]->setPosition(std::get<0>(positions[i]));
+		auto [position, rotationAngle] = positions[i];
+		meshRenderers[i]->setPosition(position);
 
-		rotation += std::get<1>(positions[i]);
+		rotation += rotationAngle;
 		meshRenderers[i]->setRotation(rotation);
 	}
 }

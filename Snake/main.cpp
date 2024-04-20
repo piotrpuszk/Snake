@@ -24,22 +24,18 @@ int main()
 
 	auto snake{ gameObjectFactory.create<Snake>() };
 
-	const float wallWidth{ 50.f };
-	const sf::Vector2f wallLeftSize{ wallWidth, map.y };
-	const sf::Vector2f wallUpSize{ wallWidth, map.x };
+	const float wallSize{ 50.f };
 
 	std::vector<Wall*> walls
 	{
-		gameObjectFactory.create<Wall>(sf::Vector2f{0, 0}, wallLeftSize, sf::Vector2f{wallWidth * 0.5f, map.y * 0.5f}, wallLeftSize),
-		gameObjectFactory.create<Wall>(sf::Vector2f{map.x - wallWidth, 0}, wallLeftSize, sf::Vector2f{map.x - wallWidth * 0.5f, map.y * 0.5f}, wallLeftSize),
-		gameObjectFactory.create<Wall>(sf::Vector2f{wallWidth, wallWidth}, wallUpSize, sf::Vector2f{map.x * 0.5f, wallWidth * 0.5f}, sf::Vector2f{wallUpSize.y, wallUpSize.x}),
-		gameObjectFactory.create<Wall>(sf::Vector2f{wallWidth, map.y}, wallUpSize, sf::Vector2f{map.x * 0.5f, map.y - wallWidth * 0.5f}, sf::Vector2f{wallUpSize.y, wallUpSize.x}),
+		gameObjectFactory.create<Wall>(sf::Vector2f{0, 0}, sf::Vector2f{0, 1.f}, map.y / wallSize, wallSize, sf::Vector2f{wallSize * 0.5f, map.y * 0.5f}, sf::Vector2f{wallSize, map.y}),
+		gameObjectFactory.create<Wall>(sf::Vector2f{map.x - wallSize, 0}, sf::Vector2f{0, 1.f}, map.y / wallSize, wallSize, sf::Vector2f{map.x - wallSize * 0.5f, map.y * 0.5f}, sf::Vector2f{wallSize, map.y}),
+		gameObjectFactory.create<Wall>(sf::Vector2f{0, 0}, sf::Vector2f{1.f, 0}, map.x / wallSize, wallSize, sf::Vector2f{map.x * 0.5f, wallSize * 0.5f}, sf::Vector2f{map.x, wallSize}),
+		gameObjectFactory.create<Wall>(sf::Vector2f{0, map.y - wallSize}, sf::Vector2f{1.f, 0}, map.x / wallSize, wallSize, sf::Vector2f{map.x * 0.5f, map.y - wallSize * 0.5f}, sf::Vector2f{map.x, wallSize}),
 	};
 
-	walls[2]->getComponent<MeshRenderer>()->rotate(-90);
-	walls[3]->getComponent<MeshRenderer>()->rotate(-90);
 
-	auto backgroundTexture{ gameObjectFactory.create<BackgroundTexture>(sf::Vector2f{}, map) };
+	auto backgroundTexture{ gameObjectFactory.create<BackgroundTexture>(map) };
 
 	CollisionSystem collisionSystem{};
 	for (const auto& e : snake->getComponents<BoxCollider>())
@@ -62,11 +58,15 @@ int main()
 	GameObjectInstantiator::setCollisionSystem(&collisionSystem);
 
 	const auto additionalMargin{ 50.f };
-	gameObjectFactory.create<ConsumablesSpawner>(map * 0.5f, sf::Vector2f{ map.x - wallWidth * 2.f - additionalMargin, map.y - wallWidth * 2.f - additionalMargin }, sf::seconds(1.f));
-
+	gameObjectFactory.create<ConsumablesSpawner>(map * 0.5f, sf::Vector2f{ map.x - wallSize * 2.f - additionalMargin, map.y - wallSize * 2.f - additionalMargin }, sf::seconds(1.f));
 
 	while (window.isOpen())
 	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+		{
+			window.close();
+			continue;
+		}
 		gameLoop.execute();
 	}
 

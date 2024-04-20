@@ -1,4 +1,5 @@
 #pragma once
+#include "TurnPointTextureSelector.h"
 #include <memory>
 #include "GameObject.h"
 #include "TextureStore.h"
@@ -12,6 +13,7 @@
 #include "BoxCollider.h"
 #include "Wall.h"
 #include "BackgroundTexture.h"
+#include "GameOver.h"
 
 class GameObjectFactory
 {
@@ -24,8 +26,14 @@ private:
 	Snake* createSnake();
 	Consumable* createConsumable(sf::Vector2f position, size_t growSize = 1);
 	ConsumablesSpawner* createConsumablesSpawner(const sf::Vector2f& position, const sf::Vector2f& size, sf::Time spawnInterval);
-	Wall* createWall(sf::Vector2f meshRendererPosition, sf::Vector2f meshRendererSize, sf::Vector2f boxColliderPosition, sf::Vector2f boxColliderSize);
-	BackgroundTexture* createBackgroundTexture(sf::Vector2f position, sf::Vector2f size);
+	Wall* createWall(sf::Vector2f meshRendererPosition, 
+		sf::Vector2f meshRendererGrowDirection, 
+		float meshRenderersCount,
+		float meshRendererSize,
+		sf::Vector2f boxColliderPosition,
+		sf::Vector2f boxColliderSize);
+	BackgroundTexture* createBackgroundTexture(sf::Vector2f mapSize);
+	GameOver* createGameOver(sf::Vector2f position);
 
 	TextureStore textureStore;
 	GameObjectStore& gameObjectStore;
@@ -57,5 +65,10 @@ inline T* GameObjectFactory::create(Types&&... args)
 	if constexpr (std::is_same_v<T, BackgroundTexture>)
 	{
 		return createBackgroundTexture(std::forward<Types>(args)...);
+	}
+
+	if constexpr (std::is_same_v<T, GameOver>)
+	{
+		return createGameOver(args...);
 	}
 }

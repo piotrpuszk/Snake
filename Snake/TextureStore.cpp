@@ -9,10 +9,11 @@ TextureStore::TextureStore()
 	turnPointRightUp.loadFromFile("turnPointRightUpTexture.png");
 	turnPoint.loadFromFile("turnPointTexture.png");
 	food01.loadFromFile("food01.png");
-	brick01.loadFromFile("polyHavenBrick03.jpg");
-	background.loadFromFile("polyHavenBrownMudLeaves.jpg");
+	brick01.loadFromFile("Brick01.png");
+	background.loadFromFile("grass01.png");
 	snakeHead.loadFromFile("snakeHead.png");
 	snakeTail.loadFromFile("snakeTail.png");
+	gameOver.loadFromFile("gameOver.png");
 }
 
 const sf::Texture& TextureStore::getSnakePart() const noexcept
@@ -68,4 +69,9 @@ const sf::Texture& TextureStore::getSnakeHead() const noexcept
 const sf::Texture& TextureStore::getSnakeTail() const noexcept
 {
 	return snakeTail;
+}
+
+const sf::Texture& TextureStore::getGameOver() const noexcept
+{
+	return gameOver;
 }

@@ -102,6 +102,12 @@
     <ClCompile Include="BackgroundTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameOver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TurnPointTextureSelector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLoop.h">
@@ -194,21 +200,15 @@
     <ClInclude Include="BackgroundTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameOver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TurnPointTextureSelector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="testTexture.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="testTexture2.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="food01.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="polyHavenBrick03.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="polyHavenBrownMudLeaves.jpg">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="snakePartTexture.png">
@@ -223,18 +223,28 @@
     <Image Include="turnPointLeftUp.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="turnPointRightUpTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="turnPointRightBottomTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="snakeTail.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="snakeHead.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="grass01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Brick01.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Snake.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="snakePartTexture.xcf">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="food01.xcf">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

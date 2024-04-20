@@ -18,6 +18,7 @@ public:
 	const sf::Texture& getBackground() const noexcept;
 	const sf::Texture& getSnakeHead() const noexcept;
 	const sf::Texture& getSnakeTail() const noexcept;
+	const sf::Texture& getGameOver() const noexcept;
 private:
 	sf::Texture snakePart;
 	sf::Texture turnPoint;
@@ -30,5 +31,6 @@ private:
 	sf::Texture background;
 	sf::Texture snakeHead;
 	sf::Texture snakeTail;
+	sf::Texture gameOver;
 };
 
